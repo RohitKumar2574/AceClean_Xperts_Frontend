@@ -1,0 +1,107 @@
+/* Header container */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #0a4c75
+  ); /* Gradient background */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: white;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* Logo styling */
+.logo img {
+  height: 70px; /* Larger logo size for a more striking appearance */
+  width: auto;
+}
+
+/* Navbar styling */
+.navbar ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  margin: 0 25px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 50px; /* Rounded nav links for a modern look */
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #0a4c75;
+  color: #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hover shadow for the links */
+}
+
+/* Auth buttons container */
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.auth-buttons button {
+  padding: 12px 28px;
+  border-radius: 30px; /* Fully rounded buttons */
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.2s ease; /* Added smooth scaling */
+}
+
+.login-btn {
+  background-color: white;
+  color: #43cea2; /* Matching with the gradient */
+}
+
+.login-btn:hover {
+  background-color: #43cea2;
+  color: white;
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.register-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.register-btn:hover {
+  background-color: #e67e00;
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Responsive design: Adjusts header layout for smaller screens */
+@media (max-width: 768px) {
+  .navbar ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .navbar ul li {
+    margin: 15px 0;
+  }
+}

@@ -1,0 +1,32 @@
+h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.review-content {
+  margin-top: 20px;
+}
+
+.review-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.review-item h2 {
+  margin: 0;
+}
+
+.review-item p {
+  margin: 5px 0;
+}
+
+.review-content p {
+  font-weight: bold;
+  color: #ff0000;
+  text-align: center;
+}
