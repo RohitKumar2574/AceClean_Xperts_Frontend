@@ -1,94 +1,94 @@
-// src/pages/Register.js
-import React, { useState } from 'react';
+import React from "react";
+import { Form, Button } from "react-bootstrap";
 import "../styles/Register.css";
+import { useNavigate } from "react-router-dom";
 
+export const Register = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = React.useState({
+    email: "",
+    name: "",
+    password: "",
+  });
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-import axios from 'axios';
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5001/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      console.log("Registration successful");
+      // Clear form data after successful registration
+      setFormData({
+        email: "",
+        name: "",
+        password: "",
+      });
+    }
+  };
 
-const Register = () => {
-    const [email, setEmail] = useState(''); // State for email
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+  return (
+    <div className="center-form">
+      <h1>Register</h1>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+        </Form.Group>
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setError('');
-        setSuccess('');
+        <Form.Group controlId="formBasicName">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="name"
+            placeholder="Enter name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+        </Form.Group>
 
-        // Check if passwords match
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+        </Form.Group>
 
-        try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', {
-                email,       // Include email in the request
-                username,
-                password,
-            });
-            setSuccess(response.data.message);
-            // Clear the form fields
-            setEmail('');
-            setUsername('');
-            setPassword('');
-            setConfirmPassword('');
-        } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed');
-        }
-    };
+        <Button variant="primary" type="submit">
+          Register
+        </Button>
 
-    return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Confirm Password</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
-        </div>
-    );
+        <p>
+          Already have an account? <a href="/src/pages/login.js">Login</a>
+        </p>
+      </Form>
+    </div>
+  );
 };
-
-// Exporting as default
-export default Register;
