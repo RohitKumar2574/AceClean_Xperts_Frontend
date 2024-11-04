@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
 import "../styles/Register.css";
-import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -27,11 +27,16 @@ export const Register = () => {
         body: JSON.stringify(formData),
       });
       const result = await response.json();
-      console.log(result);
+
+      if (response.ok) {
+        console.log("Registration successful:", result);
+        navigate("/login"); // Redirect to login page after successful registration
+      } else {
+        throw new Error(result.message || "Registration failed");
+      }
     } catch (error) {
       console.error(error.message);
     } finally {
-      console.log("Registration successful");
       // Clear form data after successful registration
       setFormData({
         email: "",
@@ -86,7 +91,7 @@ export const Register = () => {
         </Button>
 
         <p>
-          Already have an account? <a href="/src/pages/login.js">Login</a>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </Form>
     </div>
