@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/Register.css";
 
 export const Register = () => {
@@ -8,8 +8,10 @@ export const Register = () => {
   const [formData, setFormData] = React.useState({
     email: "",
     name: "",
+    username: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -18,6 +20,8 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
+
     try {
       const response = await fetch("http://localhost:5001/register", {
         method: "POST",
@@ -29,26 +33,19 @@ export const Register = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Registration successful:", result);
-        navigate("/login"); // Redirect to login page after successful registration
+        navigate("/login");
       } else {
-        throw new Error(result.message || "Registration failed");
+        setErrorMessage(result.error || "Registration failed");
       }
     } catch (error) {
-      console.error(error.message);
-    } finally {
-      // Clear form data after successful registration
-      setFormData({
-        email: "",
-        name: "",
-        password: "",
-      });
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
 
   return (
     <div className="center-form">
       <h1>Register</h1>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -69,6 +66,18 @@ export const Register = () => {
             name="name"
             placeholder="Enter name"
             value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
             onChange={handleInputChange}
             required
           />
@@ -97,3 +106,4 @@ export const Register = () => {
     </div>
   );
 };
+
