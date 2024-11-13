@@ -1,0 +1,178 @@
+/* Container and layout styling */
+.aboutUs {
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contentWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  /* Left Section: About Text */
+  .aboutText {
+    max-width: 600px;
+    padding: 20px;
+  }
+  
+  .aboutText h4 {
+    color: #ffaf0f; /* Orange accent color */
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .aboutText h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1f1e2e;
+    margin-bottom: 20px;
+  }
+  
+  .aboutText p {
+    font-size: 1rem;
+    color: #666666;
+    line-height: 1.6;
+  }
+  
+  /* Right Section: Skill Bars */
+  .skillBars {
+    max-width: 500px;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .skillItem {
+    margin-bottom: 15px;
+  }
+  
+  .skillItem span {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .progressBar {
+    width: 100%;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    height: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progress {
+    background-color: #ffaf0f; /* Progress bar color */
+    height: 100%;
+    border-radius: 20px;
+    text-align: right;
+    padding-right: 10px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 12px;
+  }
+  
+  /* Video Section */
+  .videoSection {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .videoThumbnail {
+    position: relative;
+    max-width: 600px;
+  }
+  
+  .videoImage {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .playButtonContainer {
+    position: relative;
+  }
+ /* Team.module.css */
+.teamSection {
+    text-align: center;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .teamContainer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .memberCard {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 1rem;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .memberCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .memberImage {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+  
+  .memberName {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .memberRole {
+    color: #777;
+    margin-bottom: 1rem;
+  }
+  
+  .twitterLink {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .twitterLink:hover {
+    text-decoration: underline;
+  }
+  
+
+  
