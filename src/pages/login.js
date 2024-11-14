@@ -1,15 +1,14 @@
-// src/pages/Login.js
-import React, { useState } from "react";
+// Login.js
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
 import { Form, Button } from "react-bootstrap";
+import { AuthContext } from "../AuthContext";
 
 export const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { login } = useContext(AuthContext);
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -21,16 +20,13 @@ export const Login = () => {
     try {
       const response = await fetch("http://localhost:5001/auth/Login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const result = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", result.token);
-        console.log(result);
+        login(result.token);
         navigate("/dashboard");
       } else {
         throw new Error(result.message || "Login failed");
@@ -71,7 +67,6 @@ export const Login = () => {
         <Button variant="primary" type="submit">
           Login
         </Button>
-
         <p>
           Don't have an account? <Link to="/register">Register</Link>
         </p>
