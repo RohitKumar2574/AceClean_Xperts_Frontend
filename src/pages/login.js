@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
@@ -26,7 +25,13 @@ export const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
+        // Store token in localStorage for persistence
+        localStorage.setItem("authToken", result.token);
+
+        // Update AuthContext state
         login(result.token);
+
+        // Redirect to dashboard
         navigate("/dashboard");
       } else {
         throw new Error(result.message || "Login failed");

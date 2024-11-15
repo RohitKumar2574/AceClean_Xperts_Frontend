@@ -1,3 +1,4 @@
+// AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
@@ -6,18 +7,22 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check authentication status on initial load
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    // Check if the token is in localStorage on component mount
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setIsAuthenticated(true); // User is authenticated
+    }
   }, []);
 
   const login = (token) => {
-    localStorage.setItem("token", token);
+    // Store token in localStorage and update state
+    localStorage.setItem("authToken", token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    // Remove token from localStorage and update state
+    localStorage.removeItem("authToken");
     setIsAuthenticated(false);
   };
 
