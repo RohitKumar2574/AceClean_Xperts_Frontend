@@ -7,18 +7,20 @@ import { Services } from "./pages/Services";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
+import { ScheduleMyCleaning } from "./pages/ScheduleMyCleaning";
+import { Payment } from "./pages/Payment";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./AuthContext"; // Import AuthContext here
+import { AuthProvider, AuthContext } from "./AuthContext";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <div className="App">
           <Header />
           <main>
@@ -27,6 +29,8 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+
+              {/* Protected route for Dashboard */}
               <Route
                 path="/dashboard"
                 element={
@@ -35,18 +39,27 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route
+                path="/schedule-my-cleaning"
+                element={<ScheduleMyCleaning />}
+              />
+              <Route path="/payment" element={<Payment />} />
+
+              {/* Fallback for non-existing routes */}
               <Route path="*" element={<h2>404 - Page Not Found</h2>} />
             </Routes>
           </main>
           <Footer />
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
+// Protected route to handle authentication check
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = React.useContext(AuthContext); // Now using AuthContext
+  const { isAuthenticated } = React.useContext(AuthContext);
   return isAuthenticated ? children : <Navigate to="/login" />;
 }
 

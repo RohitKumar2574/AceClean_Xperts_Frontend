@@ -26,10 +26,16 @@ export const Header = () => {
       <nav className="navbar">
         <ul>
           {isAuthenticated ? (
-            // Show Dashboard link if authenticated
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
+            <>
+              {/* Show Dashboard and Schedule My Cleaning if authenticated */}
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/schedule-my-cleaning">Schedule My Cleaning</Link>{" "}
+                {/* Updated path */}
+              </li>
+            </>
           ) : (
             // Show Home, Services, About, and Contact Us if not authenticated
             <>
