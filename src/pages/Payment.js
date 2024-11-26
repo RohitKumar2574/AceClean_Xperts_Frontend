@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const Payment = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [cardDetails, setCardDetails] = useState({
+    cardholderName: "",
     cardNumber: "",
     expiryDate: "",
     cvv: "",
@@ -16,18 +17,46 @@ export const Payment = () => {
   const appointmentData = JSON.parse(localStorage.getItem("appointmentData"));
 
   // Card validation functions
-  const validateCardNumber = (number) => /^[0-9]{16}$/.test(number);
+  const validateCardNumber = (number) =>
+    /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
   const validateExpiryDate = (expiry) =>
-    /^(0[1-9]|1[0-2])\/?([0-9]{4})$/.test(expiry);
+    /^(0[1-9]|1[0-2]) \/ [0-9]{2}$/.test(expiry);
   const validateCVV = (cvv) => /^[0-9]{3}$/.test(cvv);
+  const validateCardholderName = (name) => name.trim().length > 0;
 
   // Handle input changes for card details
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCardDetails((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+
+    if (name === "cardNumber") {
+      // Format card number to add spaces after every 4 digits
+      const formattedValue = value
+        .replace(/\D/g, "") // Remove non-numeric characters
+        .slice(0, 16) // Limit to 16 digits
+        .replace(/(\d{4})/g, "$1 ") // Add a space after every 4 digits
+        .trim(); // Remove trailing spaces
+      setCardDetails((prevState) => ({
+        ...prevState,
+        [name]: formattedValue,
+      }));
+    } else if (name === "expiryDate") {
+      // Format expiry date to add ' / ' after MM
+      const formattedValue = value
+        .replace(/[^0-9]/g, "") // Remove non-numeric characters
+        .slice(0, 4) // Limit to 4 digits (MMYY)
+        .replace(/(\d{2})(\d{1,2})?/, (_, mm, yy) =>
+          yy ? `${mm} / ${yy}` : mm
+        ); // Add ' / ' after MM
+      setCardDetails((prevState) => ({
+        ...prevState,
+        [name]: formattedValue,
+      }));
+    } else {
+      setCardDetails((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   // Handle form submission
@@ -38,9 +67,15 @@ export const Payment = () => {
     setErrorMessage("");
     setIsProcessing(true);
 
-    const { cardNumber, expiryDate, cvv } = cardDetails;
+    const { cardholderName, cardNumber, expiryDate, cvv } = cardDetails;
 
     // Validate the card details
+    if (!validateCardholderName(cardholderName)) {
+      setErrorMessage("Cardholder name cannot be empty.");
+      setIsProcessing(false);
+      return;
+    }
+
     if (!validateCardNumber(cardNumber)) {
       setErrorMessage(
         "Invalid card number. Please enter a valid 16-digit card number."
@@ -50,9 +85,7 @@ export const Payment = () => {
     }
 
     if (!validateExpiryDate(expiryDate)) {
-      setErrorMessage(
-        "Invalid expiry date. Please enter a valid expiry date in MM/YYYY format."
-      );
+      setErrorMessage("Invalid expiry date. Please enter in MM / YY format.");
       setIsProcessing(false);
       return;
     }
@@ -110,26 +143,37 @@ export const Payment = () => {
       {paymentSuccess && <h3>Payment Successful!</h3>}
       <form onSubmit={handleSubmit}>
         <div>
+          <label>Cardholder Name</label>
+          <input
+            type="text"
+            name="cardholderName"
+            value={cardDetails.cardholderName}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div>
           <label>Card Number</label>
           <input
             type="text"
             name="cardNumber"
             value={cardDetails.cardNumber}
             onChange={handleInputChange}
-            maxLength="16"
+            maxLength="19" // Maximum length considering spaces
+            placeholder="1234 5678 9012 3456"
             required
           />
         </div>
 
         <div>
-          <label>Expiry Date (MM/YYYY)</label>
+          <label>Expiry Date (MM / YY)</label>
           <input
             type="text"
             name="expiryDate"
             value={cardDetails.expiryDate}
             onChange={handleInputChange}
-            maxLength="7"
-            placeholder="MM/YYYY"
+            placeholder="MM / YY"
             required
           />
         </div>
@@ -137,11 +181,12 @@ export const Payment = () => {
         <div>
           <label>CVV</label>
           <input
-            type="text"
+            type="password" // Mask input with asterisks
             name="cvv"
             value={cardDetails.cvv}
             onChange={handleInputChange}
             maxLength="3"
+            placeholder="***"
             required
           />
         </div>
