@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export const Payment = () => {
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [cardDetails, setCardDetails] = useState({
-    cardholderName: "",
     cardNumber: "",
     expiryDate: "",
     cvv: "",
+    cardHolderName: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -17,36 +19,29 @@ export const Payment = () => {
   const appointmentData = JSON.parse(localStorage.getItem("appointmentData"));
 
   // Card validation functions
-  const validateCardNumber = (number) =>
-    /^[0-9]{16}$/.test(number.replace(/\s/g, ""));
+  const validateCardNumber = (number) => /^[0-9\s]{19}$/.test(number); // 16 digits with spaces
   const validateExpiryDate = (expiry) =>
-    /^(0[1-9]|1[0-2]) \/ [0-9]{2}$/.test(expiry);
+    /^(0[1-9]|1[0-2]) \/ ([0-9]{2})$/.test(expiry); // MM / YY
   const validateCVV = (cvv) => /^[0-9]{3}$/.test(cvv);
-  const validateCardholderName = (name) => name.trim().length > 0;
 
-  // Handle input changes for card details
-  const handleInputChange = (e) => {
+  // Handle card input changes
+  const handleCardInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "cardNumber") {
-      // Format card number to add spaces after every 4 digits
       const formattedValue = value
-        .replace(/\D/g, "") // Remove non-numeric characters
-        .slice(0, 16) // Limit to 16 digits
-        .replace(/(\d{4})/g, "$1 ") // Add a space after every 4 digits
-        .trim(); // Remove trailing spaces
+        .replace(/\s/g, "")
+        .replace(/(\d{4})/g, "$1 ")
+        .trim();
       setCardDetails((prevState) => ({
         ...prevState,
         [name]: formattedValue,
       }));
     } else if (name === "expiryDate") {
-      // Format expiry date to add ' / ' after MM
       const formattedValue = value
-        .replace(/[^0-9]/g, "") // Remove non-numeric characters
-        .slice(0, 4) // Limit to 4 digits (MMYY)
-        .replace(/(\d{2})(\d{1,2})?/, (_, mm, yy) =>
-          yy ? `${mm} / ${yy}` : mm
-        ); // Add ' / ' after MM
+        .replace(/\D/g, "")
+        .replace(/(\d{2})(\d{0,2})/, "$1 / $2")
+        .trim();
       setCardDetails((prevState) => ({
         ...prevState,
         [name]: formattedValue,
@@ -59,23 +54,14 @@ export const Payment = () => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async (event) => {
+  const handleCardSubmit = async (event) => {
     event.preventDefault();
-
-    // Reset previous error messages
     setErrorMessage("");
     setIsProcessing(true);
 
-    const { cardholderName, cardNumber, expiryDate, cvv } = cardDetails;
+    const { cardNumber, expiryDate, cvv, cardHolderName } = cardDetails;
 
-    // Validate the card details
-    if (!validateCardholderName(cardholderName)) {
-      setErrorMessage("Cardholder name cannot be empty.");
-      setIsProcessing(false);
-      return;
-    }
-
+    // Validate card details
     if (!validateCardNumber(cardNumber)) {
       setErrorMessage(
         "Invalid card number. Please enter a valid 16-digit card number."
@@ -96,35 +82,28 @@ export const Payment = () => {
       return;
     }
 
-    // Simulate payment process with a timeout
-    setTimeout(async () => {
-      setPaymentSuccess(true);
+    if (!cardHolderName) {
+      setErrorMessage("Please enter the cardholder's name.");
+      setIsProcessing(false);
+      return;
+    }
 
-      // Send appointment data to the backend
+    // Simulate card payment
+    setTimeout(async () => {
       try {
+        // Send appointment data to backend (simulating here)
         const response = await fetch("http://localhost:5001/api/appointments", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            customerNameForCleaning: appointmentData.customerNameForCleaning,
-            preferredDate: appointmentData.preferredDate,
-            preferredTimeRange: appointmentData.preferredTimeRange,
-            cleaningType: appointmentData.cleaningType,
-            packageName: appointmentData.packageName,
-            packageDetails: appointmentData.packageDetails,
-            packagePrice: appointmentData.packagePrice,
-            hst: appointmentData.hst,
-            totalPrice: appointmentData.totalPrice,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(appointmentData),
         });
 
         const result = await response.json();
 
         if (response.ok) {
-          localStorage.removeItem("appointmentData"); // Clear the data after successful booking
-          navigate("/dashboard"); // Redirect to the dashboard after successful booking
+          setPaymentSuccess(true);
+          localStorage.removeItem("appointmentData");
+          navigate("/dashboard");
         } else {
           setErrorMessage(result.message || "Failed to book appointment.");
         }
@@ -134,75 +113,132 @@ export const Payment = () => {
       }
 
       setIsProcessing(false);
-    }, 2000); // Simulating network delay
+    }, 2000);
+  };
+
+  const handlePayPalSuccess = async (details) => {
+    console.log("PayPal payment successful:", details);
+
+    try {
+      const response = await fetch("http://localhost:5001/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(appointmentData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setPaymentSuccess(true);
+        localStorage.removeItem("appointmentData");
+        navigate("/dashboard");
+      } else {
+        setErrorMessage(result.message || "Failed to book appointment.");
+      }
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+      setErrorMessage("There was an error processing your appointment.");
+    }
   };
 
   return (
     <div>
       <h2>Payment</h2>
       {paymentSuccess && <h3>Payment Successful!</h3>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Cardholder Name</label>
-          <input
-            type="text"
-            name="cardholderName"
-            value={cardDetails.cardholderName}
-            onChange={handleInputChange}
-            required
+
+      <div>
+        <label>Select Payment Method:</label>
+        <select
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
+          <option value="card">Credit/Debit Card</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </div>
+
+      {paymentMethod === "card" && (
+        <form onSubmit={handleCardSubmit}>
+          <div>
+            <label>Cardholder Name</label>
+            <input
+              type="text"
+              name="cardHolderName"
+              value={cardDetails.cardHolderName}
+              onChange={handleCardInputChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Card Number</label>
+            <input
+              type="text"
+              name="cardNumber"
+              value={cardDetails.cardNumber}
+              onChange={handleCardInputChange}
+              maxLength="19"
+              placeholder="xxxx xxxx xxxx xxxx"
+              required
+            />
+          </div>
+          <div>
+            <label>Expiry Date (MM / YY)</label>
+            <input
+              type="text"
+              name="expiryDate"
+              value={cardDetails.expiryDate}
+              onChange={handleCardInputChange}
+              maxLength="7"
+              placeholder="MM / YY"
+              required
+            />
+          </div>
+          <div>
+            <label>CVV</label>
+            <input
+              type="password"
+              name="cvv"
+              value={cardDetails.cvv}
+              onChange={handleCardInputChange}
+              maxLength="3"
+              required
+            />
+          </div>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          <button type="submit" disabled={isProcessing}>
+            {isProcessing ? "Processing..." : "Pay Now"}
+          </button>
+        </form>
+      )}
+
+      {paymentMethod === "paypal" && (
+        <PayPalScriptProvider
+          options={{
+            "client-id":
+              "Ae60xZulSDN1wkkb9D38HZQAYV3vmcADCAGue9olEzHAEAujPSYwEdFroWt-jA0D2A1EgZFTRrkuGyj6",
+          }}
+        >
+          <PayPalButtons
+            style={{ layout: "vertical" }}
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: appointmentData.totalPrice.toFixed(2),
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, actions) => {
+              return actions.order
+                .capture()
+                .then((details) => handlePayPalSuccess(details));
+            }}
           />
-        </div>
-
-        <div>
-          <label>Card Number</label>
-          <input
-            type="text"
-            name="cardNumber"
-            value={cardDetails.cardNumber}
-            onChange={handleInputChange}
-            maxLength="19" // Maximum length considering spaces
-            placeholder="1234 5678 9012 3456"
-            required
-          />
-        </div>
-
-        <div>
-          <label>Expiry Date (MM / YY)</label>
-          <input
-            type="text"
-            name="expiryDate"
-            value={cardDetails.expiryDate}
-            onChange={handleInputChange}
-            placeholder="MM / YY"
-            required
-          />
-        </div>
-
-        <div>
-          <label>CVV</label>
-          <input
-            type="password" // Mask input with asterisks
-            name="cvv"
-            value={cardDetails.cvv}
-            onChange={handleInputChange}
-            maxLength="3"
-            placeholder="***"
-            required
-          />
-        </div>
-
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-
-        <div>
-          <p>Package Price: ${appointmentData.packagePrice.toFixed(2)}</p>
-          <p>HST (13%): ${appointmentData.hst.toFixed(2)}</p>
-          <p>Total Price: ${appointmentData.totalPrice.toFixed(2)}</p>
-        </div>
-
-        <button type="submit" disabled={isProcessing}>
-          {isProcessing ? "Processing..." : "Pay Now"}
-        </button>
-      </form>
+        </PayPalScriptProvider>
+      )}
     </div>
   );
 };
