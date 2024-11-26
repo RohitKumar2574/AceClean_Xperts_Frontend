@@ -1,0 +1,83 @@
+.container {
+    display: flex;
+    height: 100vh;
+    background-color: #e6f7ff;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .formContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 4rem;
+    background-color: #ffffff;
+  }
+  
+  .logo {
+    width: 150px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #073763;
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+  
+  .title span {
+    color: black;
+  }
+  
+  .form {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .label {
+    color: black;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin: 10px 0px;
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #ffa500;
+    border: none;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .registerText {
+    margin-top: 1rem;
+    color: #6c757d;
+    text-align: left;
+  }
+  
+  .imageContainer {
+    flex: 1;
+    background: url("../../public/images/LoginMain.jpg") no-repeat center
+      center/cover;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+  }

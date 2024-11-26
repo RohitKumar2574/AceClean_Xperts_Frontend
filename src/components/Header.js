@@ -35,6 +35,9 @@ export const Header = () => {
                 <Link to="/schedule-my-cleaning">Schedule My Cleaning</Link>{" "}
                 {/* Updated path */}
               </li>
+              <li>
+                <Link to="/review">Review</Link>
+              </li>
             </>
           ) : (
             // Show Home, Services, About, and Contact Us if not authenticated

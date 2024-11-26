@@ -5,12 +5,12 @@ const Calculator = () => {
   const [rooms, setRooms] = useState(0);
   const [bathrooms, setBathrooms] = useState(0);
   const [kitchen, setKitchen] = useState(0);
-  const [pricePerSqFt, setPricePerSqFt] = useState(5);
+  const [price, setPrice] = useState(5);
   const [totalCost, setTotalCost] = useState(0);
 
   const handleCalculate = () => {
     const totalArea = rooms + bathrooms + kitchen;
-    const cost = totalArea * pricePerSqFt;
+    const cost = totalArea * price;
     setTotalCost(cost);
   };
 
@@ -18,7 +18,7 @@ const Calculator = () => {
     <div className="calculator-container">
       <h2>Estimate Your Cleaning Cost</h2>
       <div className="input-group">
-        <label>Rooms (sq ft):</label>
+        <label>No Of Rooms:</label>
         <input
           type="number"
           value={rooms}
@@ -26,7 +26,7 @@ const Calculator = () => {
         />
       </div>
       <div className="input-group">
-        <label>Bathrooms (sq ft):</label>
+        <label>No Of Bathrooms:</label>
         <input
           type="number"
           value={bathrooms}
@@ -34,19 +34,11 @@ const Calculator = () => {
         />
       </div>
       <div className="input-group">
-        <label>Kitchen (sq ft):</label>
+        <label>No Of Kitchen:</label>
         <input
           type="number"
           value={kitchen}
           onChange={(e) => setKitchen(Number(e.target.value))}
-        />
-      </div>
-      <div className="input-group">
-        <label>Price per Square Foot:</label>
-        <input
-          type="number"
-          value={pricePerSqFt}
-          onChange={(e) => setPricePerSqFt(Number(e.target.value))}
         />
       </div>
       <button onClick={handleCalculate}>Calculate Cost</button>

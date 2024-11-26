@@ -9,6 +9,8 @@ import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
 import { ScheduleMyCleaning } from "./pages/ScheduleMyCleaning";
 import { Payment } from "./pages/Payment";
+import { Review } from "./pages/Review";
+import Calculator from "./components/Calculator";
 import {
   BrowserRouter as Router,
   Routes,
@@ -29,6 +31,8 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/review" element={<Review />} />
+              <Route path="/cal" element={<Calculator />} />
 
               {/* Protected route for Dashboard */}
               <Route

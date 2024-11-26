@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Homepage.css";
-import { Review } from "../components/Review";
+import Calculator from "../components/Calculator"; // Import the Calculator component
+import { useNavigate } from "react-router-dom";
 
 export const Homepage = () => {
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    const isLoggedIn = !!localStorage.getItem("authToken"); // Example: Replace this with actual login check
+    if (isLoggedIn) {
+      // Redirect to booking page if the user is logged in
+      navigate("/book");
+    } else {
+      // Redirect to login page if the user is not logged in
+      navigate("/login");
+    }
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       <div className="banner">
         <h1>Welcome to AceClean Xperts</h1>
         <p>Your one-stop solution for cleanliness and well-being</p>
-        <button className="cta-btn">Book Now</button>
+        <button className="cta-btn" onClick={handleBookNow}>
+          Book Now
+        </button>
       </div>
 
       <div className="services">
@@ -47,16 +72,26 @@ export const Homepage = () => {
       <div className="cost-calculator">
         <h1>Calculate Your Estimated Cost</h1>
         <p>(Residential Cleaning Only)</p>
-        <button className="cta-btn">Calculate Now</button>
+        <button className="cta-btn" onClick={handleOpenModal}>
+          Calculate Now
+        </button>
         <p className="note">
           For Commercial Cleaning, contact us. Our team will help you out by
           analysing your requirements.
         </p>
       </div>
 
-      <div className="testimonial-container">
-        <Review /> {/* Add the Review component here */}
-      </div>
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-modal" onClick={handleCloseModal}>
+              &times;
+            </button>
+            <Calculator />
+          </div>
+        </div>
+      )}
     </>
   );
 };

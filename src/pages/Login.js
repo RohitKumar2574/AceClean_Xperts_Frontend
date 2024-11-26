@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/Login.css";
+import styles from "../styles/Login.module.css"; // Use the styles from the first component
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 
@@ -27,6 +27,8 @@ export const Login = () => {
       if (response.ok) {
         // Store token in localStorage for persistence
         localStorage.setItem("authToken", result.token);
+        // Store logged user in email
+        localStorage.setItem("email", formData.email);
 
         // Update AuthContext state
         login(result.token);
@@ -42,40 +44,53 @@ export const Login = () => {
   };
 
   return (
-    <div className="center-form">
-      <h1>Login</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.title}>
+          Thanks For <span>Being Here</span>
+        </h2>
+        <Form onSubmit={handleSubmit} className={styles.form}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label className={styles.label}>
+              Please enter your email
+            </Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Please enter your email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label className={styles.label}>
+              Please enter your password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Please enter your password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
-        <p>
+          <Button variant="warning" type="submit" className={styles.button}>
+            Log In
+          </Button>
+        </Form>
+        <p className={styles.registerText}>
           Don't have an account? <Link to="/register">Register</Link>
         </p>
-      </Form>
+      </div>
+      <div className={styles.imageContainer}></div>
     </div>
   );
 };
+
+export default Login;

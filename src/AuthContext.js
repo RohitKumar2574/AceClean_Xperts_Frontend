@@ -11,17 +11,19 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [token, setToken] = useState(null);
 
-  // Check if the user is authenticated on component mount
   useEffect(() => {
-    if (token) {
-      setIsAuthenticated(true); // User is authenticated if token exists
+    // Check if the token is in localStorage on component mount
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      setToken(storedToken);
+      setIsAuthenticated(true); // User is authenticated
     }
-  }, [token]);
+  }, []);
 
   const login = (authToken) => {
-    // Store the token in localStorage and update the state
+    // Store the token in localStorage and update state
     localStorage.setItem("authToken", authToken);
     setToken(authToken);
     setIsAuthenticated(true);
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // Remove the token from localStorage and update the state
+    // Remove the token from localStorage and update state
     localStorage.removeItem("authToken");
     setToken(null);
     setIsAuthenticated(false);

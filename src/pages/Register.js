@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/Register.css";
+import styles from "../styles/Register.module.css"; // Import styles from the first component
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -43,67 +43,80 @@ export const Register = () => {
   };
 
   return (
-    <div className="center-form">
-      <h1>Register</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h2 className={styles.title}>Sign Up</h2>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        <Form onSubmit={handleSubmit} className={styles.form}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label className={styles.label}>
+              Please Enter Email address
+            </Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            placeholder="Enter name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <Form.Group controlId="formBasicName">
+            <Form.Label className={styles.label}>Please Enter Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              placeholder="Enter name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-            placeholder="Enter username"
-            value={formData.username}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <Form.Group controlId="formBasicUsername">
+            <Form.Label className={styles.label}>
+              Please Enter Username
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={formData.username}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label className={styles.label}>
+              Please Enter Password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className={styles.input}
+              required
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Register
-        </Button>
-
-        <p>
+          <Button variant="primary" type="submit" className={styles.button}>
+            Register
+          </Button>
+        </Form>
+        <p className={styles.registerText}>
           Already have an account? <Link to="/login">Login</Link>
         </p>
-      </Form>
+      </div>
+      <div className={styles.imageContainer}></div>
     </div>
   );
 };
 
+export default Register;

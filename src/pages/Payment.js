@@ -12,23 +12,16 @@ export const Payment = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
+  // Retrieve appointment data from localStorage
   const appointmentData = JSON.parse(localStorage.getItem("appointmentData"));
 
-  const validateCardNumber = (number) => {
-    const regex = /^[0-9]{16}$/;
-    return regex.test(number);
-  };
+  // Card validation functions
+  const validateCardNumber = (number) => /^[0-9]{16}$/.test(number);
+  const validateExpiryDate = (expiry) =>
+    /^(0[1-9]|1[0-2])\/?([0-9]{4})$/.test(expiry);
+  const validateCVV = (cvv) => /^[0-9]{3}$/.test(cvv);
 
-  const validateExpiryDate = (expiry) => {
-    const regex = /^(0[1-9]|1[0-2])\/?([0-9]{4})$/;
-    return regex.test(expiry);
-  };
-
-  const validateCVV = (cvv) => {
-    const regex = /^[0-9]{3}$/;
-    return regex.test(cvv);
-  };
-
+  // Handle input changes for card details
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCardDetails((prevState) => ({
@@ -37,15 +30,17 @@ export const Payment = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Reset previous error messages
     setErrorMessage("");
     setIsProcessing(true);
 
-    // Validate all card details
     const { cardNumber, expiryDate, cvv } = cardDetails;
 
+    // Validate the card details
     if (!validateCardNumber(cardNumber)) {
       setErrorMessage(
         "Invalid card number. Please enter a valid 16-digit card number."
@@ -68,12 +63,11 @@ export const Payment = () => {
       return;
     }
 
-    // Simulate payment process
+    // Simulate payment process with a timeout
     setTimeout(async () => {
-      // Simulate payment success
       setPaymentSuccess(true);
 
-      // Send the appointment data to the backend to be saved in the database
+      // Send appointment data to the backend
       try {
         const response = await fetch("http://localhost:5001/api/appointments", {
           method: "POST",
@@ -97,7 +91,7 @@ export const Payment = () => {
 
         if (response.ok) {
           localStorage.removeItem("appointmentData"); // Clear the data after successful booking
-          navigate("/dashboard"); // Redirect to the dashboard
+          navigate("/dashboard"); // Redirect to the dashboard after successful booking
         } else {
           setErrorMessage(result.message || "Failed to book appointment.");
         }
