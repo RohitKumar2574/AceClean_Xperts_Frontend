@@ -42,6 +42,7 @@ function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/terms" element={<TermsCondition />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
+
               {/* Protected route for Dashboard */}
               <Route
                 path="/dashboard"
