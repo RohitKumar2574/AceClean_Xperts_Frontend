@@ -10,6 +10,11 @@ import { Dashboard } from "./pages/Dashboard";
 import { ScheduleMyCleaning } from "./pages/ScheduleMyCleaning";
 import { Payment } from "./pages/Payment";
 import { Review } from "./pages/Review";
+import { About } from "./pages/About";
+import { ContactUs } from "./pages/Contact";
+import { TermsCondition } from "./pages/TermsConditions";
+import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { ErrorPage } from "./pages/ErrorPage";
 import Calculator from "./components/Calculator";
 import {
   BrowserRouter as Router,
@@ -33,7 +38,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/review" element={<Review />} />
               <Route path="/cal" element={<Calculator />} />
-
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/terms" element={<TermsCondition />} />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
               {/* Protected route for Dashboard */}
               <Route
                 path="/dashboard"
@@ -51,7 +59,7 @@ function App() {
               <Route path="/payment" element={<Payment />} />
 
               {/* Fallback for non-existing routes */}
-              <Route path="*" element={<h2>404 - Page Not Found</h2>} />
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </main>
           <Footer />

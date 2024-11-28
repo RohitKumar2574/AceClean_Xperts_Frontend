@@ -4,11 +4,11 @@ import "../styles/Footer.css";
 export const Footer = () => {
   return (
     <footer className="footer">
-      <div className="footer-nav">
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact Us</a>
+       <div className="footer-nav">
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
         <a href="/privacy-policy">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>
       </div>
