@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
+  console.log(process.env.REACT_APP_API_URL);
   const [activeTab, setActiveTab] = useState("basic-clean");
+  const [upcomingOrders, setUpcomingOrders] = useState([]);
+  const [orderHistoryData, setOrderHistoryData] = useState([]);
   const navigate = useNavigate();
+
   const handleContactSupport = () => {
     navigate("/contact");
-  };
-  const handleContactCleaner = (cleanerName) => {
-    alert(`Contacting Cleaner: ${cleanerName}`);
   };
 
   const serviceData = {
@@ -59,77 +60,29 @@ export const Dashboard = () => {
       ],
     },
   };
-  const upcomingOrders = [
-    {
-      id: 1,
-      title: "Deep Cleaning Service",
-      date: "2024-11-25",
-      time: "10:00 AM",
-    },
-    {
-      id: 2,
-      title: "Move-In Cleaning",
-      date: "2024-12-01",
-      time: "2:00 PM",
-    },
-    {
-      id: 3,
-      title: "Basic Clean Package",
-      date: "2024-12-05",
-      time: "11:30 AM",
-    },
-  ];
-  const currentOrders = [
-    {
-      id: 1,
-      title: "Deep Cleaning Service",
-      status: "In Progress",
-      cleanerName: "John Doe",
-      imageUrl: "/assets/img/dashboard/service1.jpg",
-    },
-    {
-      id: 2,
-      title: "Move-In Cleaning",
-      status: "Scheduled",
-      cleanerName: "Jane Smith",
-      imageUrl: "/assets/img/dashboard/service1.jpg",
-    },
-    {
-      id: 3,
-      title: "Basic Clean Package",
-      status: "Completed",
-      cleanerName: "Michael Brown",
-      imageUrl: "/assets/img/dashboard/service1.jpg",
-    },
-  ];
-  const orderHistoryData = [
-    {
-      id: 1,
-      title: "Deep Cleaning Service",
-      completedDate: "2023-11-20",
-      cleanerName: "John Doe",
-      amountPaid: "$120",
-      imageUrl: "/assets/img/dashboard/history.jpg",
-    },
-    {
-      id: 2,
-      title: "Basic Cleaning Package",
-      completedDate: "2023-11-15",
-      cleanerName: "Jane Smith",
-      amountPaid: "$80",
-      imageUrl: "/assets/img/dashboard/history.jpg",
-    },
-    {
-      id: 3,
-      title: "Move-In Cleaning",
-      completedDate: "2023-11-10",
-      cleanerName: "Michael Brown",
-      amountPaid: "$150",
-      imageUrl: "/assets/img/dashboard/history.jpg",
-    },
-  ];
-  
-  
+
+  // Fetch orders dynamically
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        // Fetch upcoming orders (adjust URL to your API)
+        const upcomingResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/appointments`, {
+          params: { status: "upcoming", page: 1, limit: 10 },
+        });
+        setUpcomingOrders(upcomingResponse.data.data);
+
+        // Fetch order history (adjust URL to your API)
+        const historyResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/appointments`, {
+          params: { status: "completed", page: 1, limit: 10 },
+        });
+        setOrderHistoryData(historyResponse.data.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const renderContent = () => {
     const content = serviceData[activeTab];
@@ -161,8 +114,8 @@ export const Dashboard = () => {
     <>
       <div className="banner text-center">
         <div className="banner-text text-center">
-          <h1 style={{color:'#fff'}}>Dashboard</h1>
-          <p style={{textAlign:'center'}}>{activeTab.replace("-", " ").toUpperCase()}</p>
+          <h1 style={{ color: '#fff' }}>Dashboard</h1>
+          <p style={{ textAlign: 'center' }}>{activeTab.replace("-", " ").toUpperCase()}</p>
         </div>
       </div>
       <div className="services-app">
@@ -184,12 +137,12 @@ export const Dashboard = () => {
         <div className="order-cards-container">
           {upcomingOrders.map((order) => (
             <div key={order.id} className="order-card">
-              <h2 className="order-title">{order.title}</h2>
+              <h2 className="order-title">{order.packageName}</h2>
               <p className="order-date">
                 <strong>Date:</strong> {order.date}
               </p>
               <p className="order-time">
-                <strong>Time:</strong> {order.time}
+                <strong>Time:</strong> {order.timeRange}
               </p>
               <button className="contact-button" onClick={handleContactSupport}>
                 Contact Support
@@ -198,23 +151,23 @@ export const Dashboard = () => {
           ))}
         </div>
       </div>
-      
+
       <div className="order-history">
         <h1>Order History</h1>
         <div className="history-cards-container">
           {orderHistoryData.map((order) => (
             <div key={order.id} className="history-card">
-              <img src={order.imageUrl} alt={order.title} className="history-image" />
+              
               <div className="history-details">
-                <h2 className="history-title">{order.title}</h2>
+                <h2 className="history-title">{order.packageName}</h2>
                 <p className="history-completed-date">
-                  <strong>Date Completed:</strong> {order.completedDate}
+                  <strong>Date Completed:</strong> {order.updatedAt}
                 </p>
                 <p className="history-cleaner-name">
                   <strong>Cleaner:</strong> {order.cleanerName}
                 </p>
                 <p className="history-amount-paid">
-                  <strong>Amount Paid:</strong> {order.amountPaid}
+                  <strong>Amount Paid:</strong> {order.totalPrice}
                 </p>
               </div>
             </div>
