@@ -3,13 +3,14 @@ import axios from "axios";
 import styles from "../../styles/admin/AllocateSlots.module.css";
 
 const AllocateSlots = () => {
-  const [slots, setSlots] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState("");
   const [selectedCleaningType, setSelectedCleaningType] = useState("");
   const [selectedDates, setSelectedDates] = useState([]);
   const [selectedTimeRanges, setSelectedTimeRanges] = useState([]);
   const [packages, setPackages] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const timeRanges = [
     "8:00 AM - 10:00 AM",
     "10:00 AM - 12:00 PM",
@@ -26,6 +27,12 @@ const AllocateSlots = () => {
     }
   }, [selectedCleaningType]);
 
+  useEffect(() => {
+    if (selectedDates.length > 0) {
+      fetchSlotsByDate(selectedDates[0]);
+    }
+  }, [selectedDates]);
+
   const fetchPackages = async (type) => {
     try {
       const response = await axios.get(
@@ -39,7 +46,39 @@ const AllocateSlots = () => {
     }
   };
 
+  const fetchSlotsByDate = async (date) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `http://localhost:5001/api/slots/date?date=${date}`
+      );
+      const slotData = response.data[0];
+
+      if (slotData) {
+
+        setSelectedPackage(slotData.packageId);
+        setSelectedCleaningType(slotData.cleaningType);
+        setSelectedTimeRanges(
+          slotData.slots.map(
+            (slot) => `${slot.startTime} - ${slot.endTime}`
+          )
+        );
+        setErrorMessage("");
+      } else {
+        setSelectedPackage("");
+        setSelectedCleaningType("");
+        setSelectedTimeRanges([]);
+      }
+      setLoading(false);
+    } catch (error) {
+      setErrorMessage("Failed to fetch slots for the selected date.");
+      setLoading(false);
+    }
+  };
+
+
   const handleCleaningTypeChange = (e) => {
+    console.log('handleCleaningTypeChange', selectedCleaningType);
     const type = e.target.value;
     setSelectedCleaningType(type);
     setSelectedPackage("");
@@ -50,14 +89,14 @@ const AllocateSlots = () => {
     setSelectedPackage(e.target.value);
   };
 
-  const handleDateChange = (e) => {
+  const handleDateChange = async (e) => {
     const { value } = e.target;
-    setSelectedDates((prevDates) => {
-      if (prevDates.includes(value)) {
-        return prevDates.filter((date) => date !== value);
-      }
-      return [...prevDates, value];
-    });
+    setSelectedDates([value]);
+    setErrorMessage("");
+    setSuccessMessage("");
+    if (value) {
+      await fetchSlotsByDate(value);
+    }
   };
 
   const handleTimeRangeChange = (e) => {
@@ -70,7 +109,7 @@ const AllocateSlots = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -83,28 +122,41 @@ const AllocateSlots = () => {
       return;
     }
 
-    const newSlots = selectedDates
-      .map((date) =>
-        selectedTimeRanges.map((timeRange) => ({
-          package: selectedPackage,
-          date: date,
-          timeRange: timeRange,
-          cleaningType: selectedCleaningType,
-        }))
-      )
-      .flat();
+    const newSlots = {
+      packageId: selectedPackage,
+      packageName: packages.find((pkg) => pkg._id === selectedPackage)?.name || "",
+      date: selectedDates,
+      slots: selectedTimeRanges.map((timeRange) => {
+        const [startTime, endTime] = timeRange.split(" - ");
+        return {
+          startTime: startTime.trim(),
+          endTime: endTime.trim(),
+          status: "available", // Default status
+        };
+      }),
+    };
 
-    setSlots([...slots, ...newSlots]);
-    setSelectedPackage("");
-    setSelectedDates([]);
-    setSelectedTimeRanges([]);
-    setSelectedCleaningType("");
-    setErrorMessage("");
+    try {
+      setLoading(true);
+      await axios.post("http://localhost:5001/api/slots", newSlots);
+      setSuccessMessage("Slots allocated successfully!");
+      await fetchSlotsByDate(selectedDates[0]);
+      setSelectedPackage("");
+      setSelectedDates([]);
+      setSelectedTimeRanges([]);
+      setSelectedCleaningType("");
+      setErrorMessage("");
+      setLoading(false);
+    } catch (error) {
+      setErrorMessage("Failed to allocate slots. Please try again later.");
+      setLoading(false);
+    }
   };
+
 
   const getPackageOptions = () => {
     return packages.map((pkg) => (
-      <option key={pkg._id} value={pkg.name}>
+      <option key={pkg._id} value={pkg._id}>
         {pkg.name}
       </option>
     ));
@@ -114,6 +166,7 @@ const AllocateSlots = () => {
     <div className={styles.container}>
       <h1>Allocate Slots</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+      {successMessage && <p className={styles.success}>{successMessage}</p>}
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <h2>Choose Cleaning Type</h2>
@@ -140,14 +193,18 @@ const AllocateSlots = () => {
           </label>
         </div>
 
-        <h2>Select Dates</h2>
+
+        <h2>Select Package</h2>
+        <div className={styles.packageSelection}>
+          <select value={selectedPackage || ""} onChange={handlePackageChange}>
+            <option value="">Select Package</option>
+            {getPackageOptions()}
+          </select>
+        </div>
+
+        <h2>Select Date</h2>
         <div className={styles.dateSelection}>
-          <input
-            type="date"
-            value={selectedDates[0]}
-            onChange={handleDateChange}
-            multiple
-          />
+          <input type="date" value={selectedDates[0]} onChange={handleDateChange} />
         </div>
 
         <h2>Select Time Ranges</h2>
@@ -165,38 +222,16 @@ const AllocateSlots = () => {
           ))}
         </div>
 
-        <h2>Select Package</h2>
-        <div className={styles.packageSelection}>
-          <select value={selectedPackage} onChange={handlePackageChange}>
-            <option value="">Select Package</option>
-            {getPackageOptions()}
-          </select>
-        </div>
-
         <button
           className={styles.button}
           type="submit"
-          disabled={
-            !selectedPackage ||
-            selectedDates.length === 0 ||
-            selectedTimeRanges.length === 0
-          }
+          disabled={loading}
         >
-          Allocate Slots
+          {loading ? "Allocating..." : "Allocate Slots"}
         </button>
       </form>
 
-      <h2>Allocated Slots</h2>
-      <ul className={styles.slotList}>
-        {slots.map((slot, index) => (
-          <li key={index}>
-            <strong>{slot.package}</strong>
-            <span>
-              {slot.date} - {slot.timeRange}
-            </span>
-          </li>
-        ))}
-      </ul>
+    
     </div>
   );
 };
