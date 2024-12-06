@@ -67,55 +67,71 @@ const ManagePackages = () => {
     <div className={styles.container}>
       <h2>Manage Cleaning Packages</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          name="name"
-          placeholder="Package Name"
-          value={form.name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          name="price"
-          type="number"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleInputChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleInputChange}
-          required
-        ></textarea>
-        <select name="type" value={form.type} onChange={handleInputChange}>
-          <option value="residential">Residential</option>
-          <option value="commercial">Commercial</option>
-        </select>
-        <button type="submit">
+        <div className={styles.inputGroup}>
+          <input
+            name="name"
+            placeholder="Package Name"
+            value={form.name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <input
+            name="price"
+            type="number"
+            placeholder="Price"
+            value={form.price}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={form.description}
+            onChange={handleInputChange}
+            required
+          ></textarea>
+        </div>
+        <div className={styles.inputGroup}>
+          <select name="type" value={form.type} onChange={handleInputChange}>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
+        <button type="submit" className={styles.submitBtn}>
           {isEditing ? "Update Package" : "Add Package"}
         </button>
       </form>
-      <ul className={styles.packageList}>
+
+      <div className={styles.packageContainer}>
         {packages.map((pkg) => (
-          <li key={pkg._id}>
-            <strong>{pkg.name}</strong> - ${pkg.price} ({pkg.type})
-            <p>{pkg.description}</p>
-            <div className={styles.buttons}>
-              <button onClick={() => handleEdit(pkg)} className="editBtn">
+          <div className={styles.packageCard} key={pkg._id}>
+            <div className={styles.packageDetails}>
+              <h3>{pkg.name}</h3>
+              <p className={styles.packagePrice}>${pkg.price}</p>
+              <p className={styles.packageType}>{pkg.type}</p>
+              <p className={styles.packageDescription}>{pkg.description}</p>
+            </div>
+            <div className={styles.packageActions}>
+              <button
+                onClick={() => handleEdit(pkg)}
+                className={styles.editBtn}
+              >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(pkg._id)}
-                className="deleteBtn"
+                className={styles.deleteBtn}
               >
                 Delete
               </button>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

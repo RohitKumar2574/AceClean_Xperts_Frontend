@@ -1,0 +1,141 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+.shadowBox {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.form {
+  display: grid;
+  gap: 15px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+textarea,
+select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box; /* Prevents fields from overflowing */
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px; /* Ensures description isn't too large */
+}
+
+.submitBtn {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: #45a049;
+}
+
+.packageContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.packageCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.packageCard:hover {
+  transform: translateY(-10px);
+}
+
+.packageDetails h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 10px 0;
+}
+
+.packagePrice {
+  font-size: 1.2rem;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.packageType {
+  font-size: 1rem;
+  color: #777;
+}
+
+.packageDescription {
+  font-size: 1rem;
+  color: #555;
+  margin: 15px 0;
+  line-height: 1.5;
+}
+
+.packageActions {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+.actionBtn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.editBtn {
+  background-color: #ffa500;
+  color: white;
+}
+
+.editBtn:hover {
+  background-color: #ff8c00;
+}
+
+.deleteBtn {
+  background-color: #f44336;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background-color: #e53935;
+}
