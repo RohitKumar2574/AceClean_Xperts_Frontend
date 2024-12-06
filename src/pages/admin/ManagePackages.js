@@ -56,7 +56,7 @@ const ManagePackages = () => {
     setForm(pkg);
     setIsEditing(true);
     setEditId(pkg._id);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top when editing
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
@@ -70,11 +70,17 @@ const ManagePackages = () => {
     }
   };
 
+  const residentialPackages = packages.filter(
+    (pkg) => pkg.type === "residential"
+  );
+  const commercialPackages = packages.filter(
+    (pkg) => pkg.type === "commercial"
+  );
+
   return (
     <div className={styles.container}>
       <h2>Manage Cleaning Packages</h2>
 
-      {/* Display success or error messages */}
       {alertMessage && <div className={styles.alert}>{alertMessage}</div>}
 
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -118,30 +124,59 @@ const ManagePackages = () => {
       </form>
 
       <div className={styles.packageContainer}>
-        {packages.map((pkg) => (
-          <div className={styles.packageCard} key={pkg._id}>
-            <div className={styles.packageDetails}>
-              <h3>{pkg.name}</h3>
-              <p className={styles.packagePrice}>${pkg.price}</p>
-              <p className={styles.packageType}>{pkg.type}</p>
-              <p className={styles.packageDescription}>{pkg.description}</p>
+        <div className={styles.packageColumn}>
+          <h3>Residential Packages</h3>
+          {residentialPackages.map((pkg) => (
+            <div className={styles.packageCard} key={pkg._id}>
+              <div className={styles.packageDetails}>
+                <h4>{pkg.name}</h4>
+                <p className={styles.packagePrice}>${pkg.price}</p>
+                <p className={styles.packageDescription}>{pkg.description}</p>
+              </div>
+              <div className={styles.packageActions}>
+                <button
+                  onClick={() => handleEdit(pkg)}
+                  className={styles.editBtn}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(pkg._id)}
+                  className={styles.deleteBtn}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <div className={styles.packageActions}>
-              <button
-                onClick={() => handleEdit(pkg)}
-                className={styles.editBtn}
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(pkg._id)}
-                className={styles.deleteBtn}
-              >
-                Delete
-              </button>
+          ))}
+        </div>
+
+        <div className={styles.packageColumn}>
+          <h3>Commercial Packages</h3>
+          {commercialPackages.map((pkg) => (
+            <div className={styles.packageCard} key={pkg._id}>
+              <div className={styles.packageDetails}>
+                <h4>{pkg.name}</h4>
+                <p className={styles.packagePrice}>${pkg.price}</p>
+                <p className={styles.packageDescription}>{pkg.description}</p>
+              </div>
+              <div className={styles.packageActions}>
+                <button
+                  onClick={() => handleEdit(pkg)}
+                  className={styles.editBtn}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(pkg._id)}
+                  className={styles.deleteBtn}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

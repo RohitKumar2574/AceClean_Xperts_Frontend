@@ -14,6 +14,29 @@ h2 {
   color: #333;
 }
 
+h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.alert {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.alert.error {
+  background-color: #f44336;
+}
+
+.alert.success {
+  background-color: #4caf50;
+}
+
 .shadowBox {
   background-color: #fff;
   border-radius: 10px;
@@ -42,12 +65,12 @@ select {
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 100%;
-  box-sizing: border-box; /* Prevents fields from overflowing */
+  box-sizing: border-box;
 }
 
 textarea {
   resize: vertical;
-  min-height: 100px; /* Ensures description isn't too large */
+  min-height: 100px;
 }
 
 .submitBtn {
@@ -66,10 +89,16 @@ textarea {
 }
 
 .packageContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
   gap: 20px;
   margin-top: 40px;
+}
+
+.packageColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .packageCard {
@@ -86,7 +115,7 @@ textarea {
   transform: translateY(-10px);
 }
 
-.packageDetails h3 {
+.packageDetails h4 {
   font-size: 1.5rem;
   color: #333;
   margin: 10px 0;
@@ -96,11 +125,6 @@ textarea {
   font-size: 1.2rem;
   color: #4caf50;
   font-weight: bold;
-}
-
-.packageType {
-  font-size: 1rem;
-  color: #777;
 }
 
 .packageDescription {
@@ -141,21 +165,4 @@ textarea {
 
 .deleteBtn:hover {
   background-color: #e53935;
-}
-
-.alert {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.alert.error {
-  background-color: #f44336;
-}
-
-.alert.success {
-  background-color: #4caf50;
 }
