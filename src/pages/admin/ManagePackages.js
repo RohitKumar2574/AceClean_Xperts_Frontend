@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "../../styles/admin/ManagePackages.css";
+import styles from "../../styles/admin/ManagePackages.module.css";
 
 const ManagePackages = () => {
   const [packages, setPackages] = useState([]);
@@ -12,6 +12,7 @@ const ManagePackages = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     fetchPackages();
@@ -36,15 +37,18 @@ const ManagePackages = () => {
     try {
       if (isEditing) {
         await axios.put(`http://localhost:5001/api/packages/${editId}`, form);
+        setAlertMessage("Package updated successfully!");
         setIsEditing(false);
         setEditId(null);
       } else {
         await axios.post("http://localhost:5001/api/packages", form);
+        setAlertMessage("Package added successfully!");
       }
       setForm({ name: "", price: 0, description: "", type: "residential" });
       fetchPackages();
     } catch (error) {
       console.error("Error submitting package:", error);
+      setAlertMessage("An error occurred, please try again.");
     }
   };
 
@@ -52,20 +56,27 @@ const ManagePackages = () => {
     setForm(pkg);
     setIsEditing(true);
     setEditId(pkg._id);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top when editing
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5001/api/packages/${id}`);
+      setAlertMessage("Package deleted successfully!");
       fetchPackages();
     } catch (error) {
       console.error("Error deleting package:", error);
+      setAlertMessage("An error occurred while deleting the package.");
     }
   };
 
   return (
     <div className={styles.container}>
       <h2>Manage Cleaning Packages</h2>
+
+      {/* Display success or error messages */}
+      {alertMessage && <div className={styles.alert}>{alertMessage}</div>}
+
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
           <input
