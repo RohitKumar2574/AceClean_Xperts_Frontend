@@ -23,6 +23,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./AuthContext";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AllocateSlots from "./pages/admin/AllocateSlots";
+import ManagePackages from "./pages/admin/ManagePackages";
 
 function App() {
   return (
@@ -42,6 +45,9 @@ function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/terms" element={<TermsCondition />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="admin-dashboard" element={<AdminDashboard />} />
+              <Route path="allocate-slots" element={<AllocateSlots />} />
+              <Route path="manage-packages" element={<ManagePackages />} />
 
               {/* Protected route for Dashboard */}
               <Route

@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Login.module.css"; // Use the styles from the first component
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
+import {jwtDecode} from 'jwt-decode';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -20,21 +21,25 @@ export const Login = () => {
       const response = await fetch("http://localhost:5001/auth/Login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), 
       });
       const result = await response.json();
-
+      
       if (response.ok) {
         // Store token in localStorage for persistence
         localStorage.setItem("authToken", result.token);
         // Store logged user in email
         localStorage.setItem("email", formData.email);
-
+        const user = jwtDecode(result?.token);
+        
         // Update AuthContext state
         login(result.token);
-
-        // Redirect to dashboard
-        navigate("/dashboard");
+        
+        if(user.role === "admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
         throw new Error(result.message || "Login failed");
       }

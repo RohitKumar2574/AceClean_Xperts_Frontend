@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,24 +13,29 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     // Check if the token is in localStorage on component mount
     const storedToken = localStorage.getItem("authToken");
     if (storedToken) {
+      console.log(storedToken);
+
       setToken(storedToken);
-      setIsAuthenticated(true); // User is authenticated
+      setIsAuthenticated(true);
     }
   }, []);
 
   const login = (authToken) => {
     // Store the token in localStorage and update state
     localStorage.setItem("authToken", authToken);
-    setToken(authToken);
-    setIsAuthenticated(true);
+    const user = jwtDecode(authToken);
 
-    // Optionally, navigate to a specific page after login
-    navigate("/dashboard");
+    if (Object.keys(user).length > 0) {
+      setUser(user);
+      setToken(authToken);
+      setIsAuthenticated(true);
+    }
   };
 
   const logout = () => {
@@ -43,7 +49,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, token, login, logout, user }}
+    >
       {children}
     </AuthContext.Provider>
   );

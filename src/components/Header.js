@@ -4,8 +4,11 @@ import "../styles/Header.css";
 import { AuthContext } from "../AuthContext";
 
 export const Header = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  console.log(user);
+  
   const navigate = useNavigate();
+  const { role } = user;
 
   const handleLogout = () => {
     logout();
@@ -25,7 +28,7 @@ export const Header = () => {
 
       <nav className="navbar">
         <ul>
-          {isAuthenticated ? (
+          {isAuthenticated && role === "customer" ? (
             <>
               {/* Show Dashboard and Schedule My Cleaning if authenticated */}
               <li>
@@ -39,8 +42,19 @@ export const Header = () => {
                 <Link to="/review">Review</Link>
               </li>
             </>
+          ) : isAuthenticated && role === "admin" ? (
+            <>
+              <li>
+                <Link to="/admin-dashboard">Admin Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/allocate-slots">Allocate Slots</Link>
+              </li>
+              <li>
+                <Link to="/manage-packages">Manage Packages</Link>
+              </li>
+            </>
           ) : (
-            // Show Home, Services, About, and Contact Us if not authenticated
             <>
               <li>
                 <Link to="/">Home</Link>

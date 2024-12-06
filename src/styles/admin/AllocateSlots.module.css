@@ -1,0 +1,169 @@
+/* Container Styles */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Error Message */
+.error {
+  color: red;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Radio Buttons for Cleaning Type */
+/* Radio Buttons for Cleaning Type */
+.radioButtons {
+  display: flex;
+  justify-content: center; /* Centers the radio buttons horizontally */
+  gap: 20px;
+}
+
+.radioButtons label {
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+.dateSelection input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.timeRangeSelection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeRangeSelection label {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Package Selection */
+.packageSelection select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+/* Submit Button */
+.button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Allocated Slots List */
+.slotList {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.slotList li {
+  padding: 10px;
+  background-color: #e7f5ff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.slotList li strong {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.slotList li span {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .radioButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .timeRangeSelection {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .button {
+    font-size: 0.9rem;
+    padding: 10px 18px;
+  }
+}

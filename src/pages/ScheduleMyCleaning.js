@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import styles from "../styles/ScheduleMyCleaning.module.css";
 
 export const ScheduleMyCleaning = () => {
+  const [packages, setPackages] = useState([]);
   const [appointmentData, setAppointmentData] = useState({
     customerNameForCleaning: "",
     preferredDate: "",
@@ -13,6 +16,8 @@ export const ScheduleMyCleaning = () => {
     hst: 0,
     totalPrice: 0,
   });
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const timeRanges = [
     "01:00 AM - 02:00 AM",
@@ -41,61 +46,21 @@ export const ScheduleMyCleaning = () => {
     "12:00 AM - 01:00 AM",
   ];
 
-  const navigate = useNavigate();
+  // Fetch packages on component mount
+  useEffect(() => {
+    fetchPackages();
+  }, []);
 
-  const residentialPackages = [
-    {
-      name: "Basic Clean",
-      price: 150,
-      description:
-        "Light dusting, vacuuming, mopping, and cleaning of high-traffic areas.",
-    },
-    {
-      name: "Deep Clean",
-      price: 300,
-      description:
-        "Includes basic clean plus detailed cleaning of bathrooms, kitchens, baseboards, windows, and hard-to-reach areas.",
-    },
-    {
-      name: "Move-In/Move-Out Cleaning",
-      price: 400,
-      description:
-        "Full cleaning of the entire home, including inside cabinets, drawers, and appliances.",
-    },
-    {
-      name: "Recurring Cleaning Packages",
-      price: 200,
-      description:
-        "A mix of regular maintenance cleanings, such as dusting, vacuuming, and bathroom/kitchen cleaning.",
-    },
-    {
-      name: "Specialty Clean",
-      price: 400,
-      description:
-        "Customized services based on client needs, like cleaning windows, air ducts, or post-renovation debris removal.",
-    },
-  ];
-
-  const commercialPackages = [
-    {
-      name: "Basic Office Cleaning",
-      price: 300,
-      description:
-        "Emptying trash, vacuuming, dusting, and cleaning common areas like kitchens and bathrooms.",
-    },
-    {
-      name: "Comprehensive Office Cleaning",
-      price: 600,
-      description:
-        "Includes everything in the basic package plus detailed desk and work surface cleaning, window cleaning, and sanitizing.",
-    },
-    {
-      name: "Post-Construction or Renovation Cleaning",
-      price: 1000,
-      description:
-        "Cleaning up dust, debris, and remnants from a construction project.",
-    },
-  ];
+  const fetchPackages = async () => {
+    try {
+      const response = await axios.get("http://localhost:5001/api/packages");
+      setPackages(response.data); // Set the fetched packages
+    } catch (error) {
+      setErrorMessage(
+        "Failed to fetch cleaning packages. Please try again later."
+      );
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -120,10 +85,11 @@ export const ScheduleMyCleaning = () => {
 
   const handlePackageChange = (e) => {
     const selectedPackageName = e.target.value;
-    const selectedPackage =
-      appointmentData.cleaningType === "residential"
-        ? residentialPackages.find((pkg) => pkg.name === selectedPackageName)
-        : commercialPackages.find((pkg) => pkg.name === selectedPackageName);
+    const selectedPackage = packages.find(
+      (pkg) =>
+        pkg.name === selectedPackageName &&
+        pkg.type === appointmentData.cleaningType
+    );
 
     if (selectedPackage) {
       const hst = parseFloat((0.13 * selectedPackage.price).toFixed(2));
@@ -142,35 +108,49 @@ export const ScheduleMyCleaning = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Save appointment data to localStorage
-    localStorage.setItem("appointmentData", JSON.stringify(appointmentData));
 
-    // Navigate to payment page
+    const {
+      customerNameForCleaning,
+      preferredDate,
+      preferredTimeRange,
+      packageName,
+    } = appointmentData;
+
+    if (
+      !customerNameForCleaning ||
+      !preferredDate ||
+      !preferredTimeRange ||
+      !packageName
+    ) {
+      setErrorMessage("All fields are required.");
+      return;
+    }
+
+    setErrorMessage(""); // Clear previous errors
+
+    // Save appointment data to localStorage and redirect to payment
+    localStorage.setItem("appointmentData", JSON.stringify(appointmentData));
     navigate("/payment");
   };
 
   const getPackageOptions = () => {
-    if (appointmentData.cleaningType === "residential") {
-      return residentialPackages.map((pkg, index) => (
-        <option key={index} value={pkg.name}>
+    // Filter packages based on the selected cleaning type
+    return packages
+      .filter((pkg) => pkg.type === appointmentData.cleaningType)
+      .map((pkg) => (
+        <option key={pkg._id} value={pkg.name}>
           {pkg.name}
         </option>
       ));
-    } else if (appointmentData.cleaningType === "commercial") {
-      return commercialPackages.map((pkg, index) => (
-        <option key={index} value={pkg.name}>
-          {pkg.name}
-        </option>
-      ));
-    }
-    return <option value="">Select a package</option>;
   };
 
   return (
-    <div>
-      <h2>Schedule My Cleaning Appointment</h2>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Schedule My Cleaning Appointment</h2>
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
         <input
+          className={styles.inputField}
           type="text"
           name="customerNameForCleaning"
           placeholder="Your Name"
@@ -179,32 +159,37 @@ export const ScheduleMyCleaning = () => {
           required
         />
         <input
+          className={styles.inputField}
           type="date"
           name="preferredDate"
           value={appointmentData.preferredDate}
           onChange={handleInputChange}
           required
         />
-        <label>
-          Cleaning Type:
-          <input
-            type="radio"
-            name="cleaningType"
-            value="residential"
-            checked={appointmentData.cleaningType === "residential"}
-            onChange={handleCleaningTypeChange}
-          />{" "}
-          Residential
-          <input
-            type="radio"
-            name="cleaningType"
-            value="commercial"
-            checked={appointmentData.cleaningType === "commercial"}
-            onChange={handleCleaningTypeChange}
-          />{" "}
-          Commercial
-        </label>
+        <div className={styles.radioButtons}>
+          <label>
+            <input
+              type="radio"
+              name="cleaningType"
+              value="residential"
+              checked={appointmentData.cleaningType === "residential"}
+              onChange={handleCleaningTypeChange}
+            />{" "}
+            Residential
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="cleaningType"
+              value="commercial"
+              checked={appointmentData.cleaningType === "commercial"}
+              onChange={handleCleaningTypeChange}
+            />{" "}
+            Commercial
+          </label>
+        </div>
         <select
+          className={styles.inputField}
           name="preferredTimeRange"
           value={appointmentData.preferredTimeRange}
           onChange={handleInputChange}
@@ -218,6 +203,7 @@ export const ScheduleMyCleaning = () => {
           ))}
         </select>
         <select
+          className={styles.inputField}
           name="packageName"
           value={appointmentData.packageName}
           onChange={handlePackageChange}
@@ -227,16 +213,19 @@ export const ScheduleMyCleaning = () => {
           {getPackageOptions()}
         </select>
         <textarea
+          className={styles.textArea}
           name="packageDetails"
           value={appointmentData.packageDetails}
           readOnly
         />
-        <div>
+        <div className={styles.priceDetails}>
           <p>Package Price: ${appointmentData.packagePrice.toFixed(2)}</p>
           <p>HST (13%): ${appointmentData.hst.toFixed(2)}</p>
           <p>Total Price: ${appointmentData.totalPrice.toFixed(2)}</p>
         </div>
-        <button type="submit">Proceed to Payment</button>
+        <button className={styles.button} type="submit">
+          Proceed to Payment
+        </button>
       </form>
     </div>
   );

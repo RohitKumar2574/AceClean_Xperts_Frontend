@@ -1,292 +1,293 @@
 .services-app {
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    color: #0a4c75;
-    padding: 40px;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
-  .services-tabs {
-    display: flex;
-    justify-content: center;
-    background-color: #0a4c75;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .services-tabs button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 15px;
-    padding: 10px 15px;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .services-tabs button.active {
-    border-bottom: 2px solid #ffc107;
-    color: #ffc107;
-  }
-  
-  .services-tabs button:hover {
-    color: #ffc107;
-  }
-  
-  .content-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .service-content {
-    flex: 3;
-    background: #0a4c75;
-    color: #fff;
-    border-radius: 16px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    padding: 30px;
-  }
-  
-  .service-title {
-    font-size: 28px;
-    color: #fff;
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
-  
-  .service-description {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: #fff;
-  }
-  
-  .service-details {
-    list-style-type: disc;
-    padding-left: 20px;
-    color: #fff;
-    text-align: left;
-  }
-  
-  .service-details li {
-    margin-bottom: 10px;
-  }
-  
-  .contact-section {
-    flex: 1;
-    background: #0a4c75;
-    color: white;
-    border-radius: 16px;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .contact-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .contact-text {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .contact-icons .icon {
-    display: inline-block;
-    font-size: 30px;
-    margin: 0 10px;
-    cursor: pointer;
-    color: white;
-    transition: all 0.3s ease;
-  }
-  
-  .contact-icons .icon:hover {
-    color: #ffc107;
-  }
-  .upcoming-orders {
-    padding: 40px;
-    background-color: #f8f9fa;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  .order-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .order-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 300px;
-    text-align: left;
-    transition: transform 0.3s ease;
-  }
-  
-  .order-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .order-title {
-    font-size: 20px;
-    color: #0a4c75;
-    margin-bottom: 10px;
-  }
-  
-  .order-date,
-  .order-time {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-  }
-  
-  .contact-button {
-    background-color: #0a4c75;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .contact-button:hover {
-    background-color: #ff9800;
-  }
-  
-  .current-orders {
-    padding: 40px;
-    background-color: #f9f9f9;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  .current-orders h1, .upcoming-orders h1, .order-history h1 {
-    color: #0a4c75;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  .order-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .order-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 300px;
-    text-align: left;
-    transition: transform 0.3s ease;
-  }
-  
-  .order-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .order-image {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .order-title {
-    font-size: 20px;
-    color: #0a4c75;
-    margin-bottom: 10px;
-  }
-  
-  .order-status,
-  .cleaner-name {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-  }
-  
-  .contact-cleaner-button {
-    background-color: #0a4c75;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .contact-cleaner-button:hover {
-    background-color: #ff9800;
-  }
-  
-  .order-history {
-    padding: 40px;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-  }
-  
-  .history-cards-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .history-card {
-    display: flex;
-    align-items: flex-start;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.3s ease;
-  }
-  
-  .history-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .history-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    margin-right: 20px;
-    object-fit: cover;
-  }
-  
-  .history-details {
-    flex: 1;
-  }
-  
-  .history-title {
-    font-size: 20px;
-    color: #0a4c75;
-    margin-bottom: 10px;
-  }
-  
-  .history-completed-date,
-  .history-cleaner-name,
-  .history-amount-paid {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  color: #0a4c75;
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.services-tabs {
+  display: flex;
+  justify-content: center;
+  background-color: #0a4c75;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.services-tabs button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 15px;
+  padding: 10px 15px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.services-tabs button.active {
+  border-bottom: 2px solid #ffc107;
+  color: #ffc107;
+}
+
+.services-tabs button:hover {
+  color: #ffc107;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.service-content {
+  flex: 3;
+  background: #0a4c75;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.service-title {
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.service-description {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.service-details {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #fff;
+  text-align: left;
+}
+
+.service-details li {
+  margin-bottom: 10px;
+}
+
+.contact-section {
+  flex: 1;
+  background: #0a4c75;
+  color: white;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.contact-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.contact-icons .icon {
+  display: inline-block;
+  font-size: 30px;
+  margin: 0 10px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.contact-icons .icon:hover {
+  color: #ffc107;
+}
+.upcoming-orders {
+  padding: 40px;
+  background-color: #f8f9fa;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.order-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.order-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+}
+
+.order-title {
+  font-size: 20px;
+  color: #0a4c75;
+  margin-bottom: 10px;
+}
+
+.order-date,
+.order-time {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.contact-button {
+  background-color: #0a4c75;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: #ff9800;
+}
+
+.current-orders {
+  padding: 40px;
+  background-color: #f9f9f9;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.current-orders h1,
+.upcoming-orders h1,
+.order-history h1 {
+  color: #0a4c75;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.order-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.order-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+}
+
+.order-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.order-title {
+  font-size: 20px;
+  color: #0a4c75;
+  margin-bottom: 10px;
+}
+
+.order-status,
+.cleaner-name {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.contact-cleaner-button {
+  background-color: #0a4c75;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.contact-cleaner-button:hover {
+  background-color: #ff9800;
+}
+
+.order-history {
+  padding: 40px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+.history-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history-card {
+  display: flex;
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-5px);
+}
+
+.history-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  margin-right: 20px;
+  object-fit: cover;
+}
+
+.history-details {
+  flex: 1;
+}
+
+.history-title {
+  font-size: 20px;
+  color: #0a4c75;
+  margin-bottom: 10px;
+}
+
+.history-completed-date,
+.history-cleaner-name,
+.history-amount-paid {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+}
