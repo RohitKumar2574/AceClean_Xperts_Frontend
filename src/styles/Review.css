@@ -1,3 +1,4 @@
+
 h1 {
   font-size: 48px;
   font-weight: bold;
@@ -128,6 +129,8 @@ button[type="submit"]:hover {
   font-size: 0.9rem;
   margin-top: 5px;
   display: block;
+
+
 }
 
 .review-content {
@@ -236,18 +239,7 @@ button[type="submit"]:hover {
   height: 25px;
   background-color: #ccc;
   /* Default color for unselected stars */
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
   transition: background-color 0.3s ease;
 }
 
@@ -330,18 +322,16 @@ textarea {
   height: 40px;
   background-color: #ddd;
   /* Default unselected color */
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
+  clip-path: polygon(50% 0%,
+      61% 35%,
+      98% 35%,
+      68% 57%,
+      79% 91%,
+      50% 70%,
+      21% 91%,
+      32% 57%,
+      2% 35%,
+      39% 35%);
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
@@ -429,6 +419,7 @@ button[type="submit"]:hover {
   font-size: 18px;
   color: #ffc107;
 }
+
 
 /* Homepage.css */
 
@@ -605,23 +596,9 @@ button[type="submit"]:hover {
   /* Ensure they are above other elements */
   background-color: #007bff !important;
   /* Background color for visibility */
+  
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .review-carousel .slick-prev,
-  .review-carousel .slick-next {
-    width: 40px;
-    height: 40px;
-    left: -45px;
-    right: -45px;
-  }
-
-  /* .review-carousel .slick-prev:before,
-  .review-carousel .slick-next:before {
-    font-size: 18px;
-  } */
-}
 
 /* Modal overlay */
 /* Modal overlay */
@@ -697,6 +674,9 @@ button[type="submit"]:hover {
   word-break: break-word;
 }
 
+
+
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -714,4 +694,22 @@ button[type="submit"]:hover {
   to {
     transform: scale(1);
   }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .review-carousel .slick-prev,
+  .review-carousel .slick-next {
+    width: 40px;
+    height: 40px;
+    left: -45px;
+    right: -45px;
+  }
+
+  /* .review-carousel .slick-prev:before,
+  .review-carousel .slick-next:before {
+    font-size: 18px;
+  } */
 }

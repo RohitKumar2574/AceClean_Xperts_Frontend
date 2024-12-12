@@ -1,141 +1,209 @@
-/* ScheduleMyCleaning.module.css */
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Container Styling */
+.schedule-cleaning-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
 }
 
-.title {
+/* Title Styling */
+.schedule-cleaning-container h2 {
   text-align: center;
-  font-size: 2rem;
-  color: #333;
+  font-size: 30px;
+  color: #333333;
+  font-weight: 700;
   margin-bottom: 20px;
+  position: relative;
 }
 
-.error {
-  color: #e74c3c;
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 20px;
+.schedule-cleaning-container h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 10px auto 0;
+  border-radius: 2px;
 }
 
-.formContainer {
+/* Form Styling */
+.schedule-cleaning-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+}
+
+.schedule-cleaning-form input[type="text"],
+.schedule-cleaning-form input[type="date"],
+.schedule-cleaning-form select,
+.schedule-cleaning-form textarea {
+  width: inherit;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9fafc;
+  transition: all 0.3s ease;
+}
+
+.schedule-cleaning-form input[type="text"]:focus,
+.schedule-cleaning-form input[type="date"]:focus,
+.schedule-cleaning-form select:focus,
+.schedule-cleaning-form textarea:focus {
+  border-color: #4caf50;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.3);
+}
+
+.schedule-cleaning-form textarea {
+  resize: none;
+  height: 150px;
+  line-height: 1.6;
+}
+
+.schedule-cleaning-form label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
   gap: 15px;
 }
 
-.inputField,
-select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-input[type="date"] {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-.inputField:focus {
-  border-color: #3498db;
-}
-
-textarea {
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  resize: vertical;
-  min-height: 120px;
-}
-
-select {
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-select:focus {
-  border-color: #3498db;
-}
-
-.label {
-  font-size: 1rem;
-  margin-bottom: 5px;
-}
-
-/* Flexbox layout for radio buttons */
-.radioButtons {
+.schedule-cleaning-form .radio-group {
   display: flex;
-  justify-content: center; /* Center the radio buttons horizontally */
-  gap: 20px; /* Space between radio buttons */
-  align-items: center; /* Vertically align the radio buttons */
+  justify-content: space-around;
+  margin: 10px 0;
 }
 
-.radioButtons label {
-  font-size: 1rem;
+.schedule-cleaning-form input[type="radio"] {
+  margin-left: 8px;
+  width: inherit;
+  accent-color: #4caf50;
 }
 
-.priceDetails {
-  background-color: #eaf0f1;
-  padding: 15px;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.priceDetails p {
-  margin: 5px 0;
-  color: #333;
-}
-
-.button {
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
+/* Dropdown Styling */
+.schedule-cleaning-form select {
+  background: #ffffff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
 }
 
-.button:hover {
-  background-color: #2980b9;
+/* Price Details */
+.schedule-cleaning-prices {
+  background: #f4f8fc;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.6;
+  box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
+.schedule-cleaning-prices p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+/* Submit Button */
+.schedule-cleaning-form button {
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(90deg, #43a047, #66bb6a);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.schedule-cleaning-form button:hover {
+  background: linear-gradient(90deg, #388e3c, #43a047);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .schedule-cleaning-container {
+    width: 90%; /* Reduce width to fit smaller screens */
+    padding: 15px; /* Reduce padding */
   }
 
-  .formContainer {
+  .schedule-cleaning-container h2 {
+    font-size: 24px; /* Slightly smaller title font */
+  }
+
+  .schedule-cleaning-form {
+    gap: 15px; /* Reduce spacing between form elements */
+  }
+
+  .schedule-cleaning-form input[type="text"],
+  .schedule-cleaning-form input[type="date"],
+  .schedule-cleaning-form select,
+  .schedule-cleaning-form textarea {
+    padding: 12px; /* Adjust input padding */
+    font-size: 14px; /* Smaller font for inputs */
+  }
+
+  .schedule-cleaning-form textarea {
+    height: 120px; /* Reduce height for smaller screens */
+  }
+
+  .schedule-cleaning-form label {
+    font-size: 16px; /* Reduce label font size */
+  }
+
+  .schedule-cleaning-prices {
+    padding: 10px; /* Reduce padding */
+    font-size: 14px; /* Smaller font for price details */
+  }
+
+  .schedule-cleaning-form button {
+    padding: 12px;
+    font-size: 16px; /* Adjust button font size */
+  }
+
+  .radio-group {
+    flex-direction: column; /* Stack radio buttons vertically */
     gap: 10px;
   }
+}
 
-  .priceDetails {
-    font-size: 0.9rem;
+@media screen and (max-width: 480px) {
+  .schedule-cleaning-container {
+    width: 95%; /* Further reduce width for smaller devices */
+    padding: 10px; /* Reduce padding */
   }
 
-  .button {
-    padding: 10px 15px;
-    font-size: 1rem;
+  .schedule-cleaning-container h2 {
+    font-size: 20px; /* Adjust title font size */
+  }
+
+  .schedule-cleaning-form input[type="text"],
+  .schedule-cleaning-form input[type="date"],
+  .schedule-cleaning-form select,
+  .schedule-cleaning-form textarea {
+    font-size: 12px; /* Smaller font size for inputs */
+    padding: 10px; /* Reduce padding */
+  }
+
+  .schedule-cleaning-prices {
+    font-size: 12px; /* Smaller font for price details */
+  }
+
+  .schedule-cleaning-form button {
+    font-size: 14px; /* Smaller font for button */
+    padding: 10px; /* Reduce padding */
   }
 }

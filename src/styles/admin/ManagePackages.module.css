@@ -8,7 +8,7 @@
 
 /* Title */
 h2 {
-  font-size: 28px;
+  font-size: 1.8rem;
   margin-bottom: 20px;
   text-align: center;
   color: #333;
@@ -24,19 +24,17 @@ h2 {
   text-align: center;
 }
 
+/* Form */
 .form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.inputGroup {
-  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .inputGroup input,
@@ -44,19 +42,20 @@ h2 {
 .inputGroup select {
   width: 100%;
   padding: 10px;
-  font-size: 16px;
+  font-size: 0.9rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box; /* Ensure consistent sizing */
+  box-sizing: border-box;
+  background-color: #f8f9fa;
 }
 
 textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 80px;
 }
 
-.selectGroup select {
-  font-size: 16px;
+.inputGroup select {
+  background-color: white;
 }
 
 .buttonGroup {
@@ -67,8 +66,8 @@ textarea {
 
 .submitBtn,
 .cancelBtn {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 15px;
+  font-size: 0.9rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -93,66 +92,65 @@ textarea {
   background-color: #e53935;
 }
 
-/* Cleaning and Residential Package Styling */
+/* Package Section */
 .packageContainer {
   display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap; /* Wrap items for responsiveness */
   justify-content: space-between;
-  margin-top: 40px;
-  gap: 20px; /* Space between columns */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .packageColumn {
   width: 100%;
-  max-width: 48%; /* Increase max-width for wider cards */
-  box-sizing: border-box; /* Ensure padding and border are accounted for */
+  max-width: 48%; /* Adjusted for side-by-side layout */
+  box-sizing: border-box;
 }
 
 .packageCard {
-  background-color: #ffffff;
+  background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  padding: 20px; /* Increase padding to make cards more spacious */
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05); /* Slightly larger shadow for more emphasis */
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  height: 200px; /* Increase height to accommodate content in wider cards */
+  justify-content: space-between;
+  height: 180px; /* Adjust height for compact layout */
 }
 
 .packageDetails {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .packageDetails h3 {
   margin: 0;
-  font-size: 20px; /* Slightly larger font size for better readability */
+  font-size: 1rem;
   font-weight: bold;
+  color: #333;
 }
 
 .packagePrice {
-  font-size: 16px; /* Increase font size for price */
+  font-size: 0.9rem;
   color: #4caf50;
   margin: 5px 0;
 }
 
 .packageDescription {
-  font-size: 16px; /* Increase description font size slightly */
+  font-size: 0.9rem;
   color: #555;
-  flex-grow: 1; /* Allow description to take up available space */
 }
 
 .packageActions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
-  margin-top: auto; /* Push actions to the bottom */
 }
 
 .editBtn,
 .deleteBtn {
-  padding: 8px 16px; /* Slightly larger buttons */
-  font-size: 14px; /* Slightly larger font size for buttons */
+  padding: 8px 12px;
+  font-size: 0.8rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -174,4 +172,61 @@ textarea {
 
 .deleteBtn:hover {
   background-color: #e53935;
+}
+
+@media (max-width: 900px) {
+  .packageCard {
+    margin-bottom: 10px;
+
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .packageColumn {
+    max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .form {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .packageCard {
+    margin-bottom: 10px;
+
+  }
+
+  .buttonGroup {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .packageCard {
+    padding: 10px;
+    margin-bottom: 10px;
+    height: auto; /* Adjust height for smaller screens */
+  }
+
+  .editBtn,
+  .deleteBtn {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+  }
+
+  .buttonGroup {
+    gap: 8px;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import { jwtDecode } from "jwt-decode";
@@ -7,17 +7,15 @@ import { AuthContext } from "../AuthContext";
 export const Header = () => {
   const { isAuthenticated, logout, user, login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (authToken && !isAuthenticated) {
-      // Avoid repeated logins
       try {
         const decodedUser = jwtDecode(authToken);
         login(authToken, decodedUser);
-        console.log("User logged in:", decodedUser);
       } catch (error) {
-        console.error("Error decoding token:", error);
         logout();
         navigate("/login");
       }
@@ -91,26 +89,33 @@ export const Header = () => {
         </Link>
       </div>
 
-      <nav className="navbar">
-        <ul>{renderLinks()}</ul>
-      </nav>
-
-      <div className="auth-buttons">
-        {isAuthenticated ? (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        ) : (
-          <>
-            <Link to="/login">
-              <button className="login-btn">Login</button>
-            </Link>
-            <Link to="/register">
-              <button className="register-btn">Register</button>
-            </Link>
-          </>
-        )}
+      {/* Hamburger Icon */}
+      <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <div className="line"></div>
+        <div className="line"></div>
+        <div className="line"></div>
       </div>
+
+      {/* Navbar */}
+      <nav className={`navbar ${isMenuOpen ? "active" : ""}`}>
+        <ul className="nav-links">{renderLinks()}</ul>
+        <div className="auth-buttons">
+          {isAuthenticated ? (
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="login-btn">Login</button>
+              </Link>
+              <Link to="/register">
+                <button className="register-btn">Register</button>
+              </Link>
+            </>
+          )}
+        </div>
+      </nav>
     </header>
   );
 };

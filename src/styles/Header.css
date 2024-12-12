@@ -4,12 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background: linear-gradient(
-    90deg,
-    #ffffff,
-    #0a4c75
-  ); /* Gradient background */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+  background: linear-gradient(90deg, #ffffff, #0a4c75);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -17,91 +13,139 @@
   font-family: "Times New Roman", Times, serif;
 }
 
-/* Logo styling */
 .logo img {
-  height: 70px; /* Larger logo size for a more striking appearance */
+  height: 70px;
   width: auto;
 }
 
-/* Navbar styling */
-.navbar ul {
+/* Navbar */
+.navbar {
+  flex: 2; /* Use remaining space */
   display: flex;
+  justify-content: space-between; /* Space between nav and auth buttons */
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center; /* Center navigation links */
   list-style: none;
   margin: 0;
   padding: 0;
+  flex-grow: 1;
 }
 
-.navbar ul li {
-  margin: 0 25px;
+.nav-links li {
+  margin: 0 20px;
 }
 
-.navbar ul li a {
+.nav-links li a {
   text-decoration: none;
   font-size: 18px;
   color: white;
   font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 50px; /* Rounded nav links for a modern look */
+  border-radius: 50px;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.navbar ul li a:hover {
+.nav-links li a:hover {
   background-color: #0a4c75;
   color: #f8f8f8;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hover shadow for the links */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Auth buttons container */
+/* Auth buttons */
 .auth-buttons {
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  align-items: center;
 }
 
-.auth-buttons button {
-  padding: 12px 28px;
-  border-radius: 30px; /* Fully rounded buttons */
+.auth-buttons button,
+.auth-buttons a button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
   border: none;
-  font-size: 16px;
+  border-radius: 20px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.4s ease, color 0.4s ease, transform 0.2s ease; /* Added smooth scaling */
+  transition: background-color 0.4s ease;
 }
 
-.login-btn {
-  background-color: white;
-  color: #43cea2; /* Matching with the gradient */
+.auth-buttons button:hover,
+.auth-buttons a button:hover {
+  background-color: #0056b3;
 }
 
-.login-btn:hover {
-  background-color: #43cea2;
-  color: white;
-  transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-.register-btn {
+.logout-btn {
   background-color: #ff9800;
-  color: white;
 }
 
-.register-btn:hover {
+.logout-btn:hover {
   background-color: #e67e00;
-  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Responsive design: Adjusts header layout for smaller screens */
-@media (max-width: 768px) {
-  .navbar ul {
+/* Hamburger icon styling */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hamburger .line {
+  height: 3px;
+  width: 100%;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Mobile styles (below 760px) */
+@media (max-width: 760px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar {
+    display: none;
+  }
+
+  .navbar.active {
+    display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #0a4c75;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 1000;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
   }
 
   .auth-buttons {
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    gap: 10px;
+    margin-top: 10px;
   }
 
-  .navbar ul li {
-    margin: 15px 0;
+  .auth-buttons button,
+  .auth-buttons a button {
+    width: 100%; /* Full-width buttons on mobile */
+    padding: 10px;
   }
 }

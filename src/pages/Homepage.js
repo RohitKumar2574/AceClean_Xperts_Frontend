@@ -106,6 +106,8 @@ export const Homepage = () => {
           </div>
         </div>
       )}
+        {/* Review Carousel Section */}
+        <Review showContentOnly={true} />
     </>
   );
 };

@@ -26,6 +26,8 @@ import { AuthProvider, AuthContext } from "./AuthContext";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllocateSlots from "./pages/admin/AllocateSlots";
 import ManagePackages from "./pages/admin/ManagePackages";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   return (

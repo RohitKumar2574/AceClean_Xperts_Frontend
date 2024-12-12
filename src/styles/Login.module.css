@@ -1,18 +1,21 @@
 .container {
   display: flex;
+  flex-wrap: wrap; /* Enable wrapping for smaller screens */
   height: 100vh;
   background-color: #e6f7ff;
   font-family: "Arial", sans-serif;
 }
 
+/* Form Container */
 .formContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 2rem 4rem;
+  padding: 2rem 3rem; /* Adjusted for better balance */
   background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -25,7 +28,7 @@
   font-weight: bold;
   color: #073763;
   text-align: left;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* Reduced for compact look */
 }
 
 .title span {
@@ -45,28 +48,40 @@
   display: block;
 }
 
-.input,
-.button {
+.input {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
   border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.input {
   border: 1px solid #ced4da;
   margin-bottom: 1rem;
   background-color: #f8f9fa;
   color: #495057;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  border-color: #ffa500;
+  outline: none;
+  box-shadow: 0 0 4px rgba(255, 165, 0, 0.5);
 }
 
 .button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
   font-weight: bold;
   background-color: #ffa500;
   border: none;
   color: white;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #e69500;
+  transform: translateY(-2px);
 }
 
 .registerText {
@@ -75,13 +90,90 @@
   text-align: left;
 }
 
-.imageContainer {
-  flex: 1;
-  background: url("../../public/images/LoginMain.jpg") no-repeat center
-    center/cover;
+.registerText a {
+  text-decoration: none;
+  color: #073763;
+  font-weight: bold;
 }
 
-a {
-  text-decoration: none;
-  color: black;
+.registerText a:hover {
+  text-decoration: underline;
+  color: #ffa500;
+}
+
+/* Image Container */
+.imageContainer {
+  flex: 1;
+  background: url("../../public/images/LoginMain.jpg") no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageContainer img {
+  position: relative;
+  z-index: 2;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .formContainer {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+
+  }
+
+  .formContainer {
+    width: 90%;
+    max-width: 500px;
+    text-align: center; /* Center-align content for smaller screens */
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .imageContainer {
+    display: none; /* Hide the image container on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .input,
+  .button {
+    font-size: 0.9rem;
+    padding: 0.65rem;
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap; /* Enable wrapping for smaller screens */
+    height: 80vh;
+    background-color: #e6f7ff;
+    font-family: "Arial", sans-serif;
+  }
 }

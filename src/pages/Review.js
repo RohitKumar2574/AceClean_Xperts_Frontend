@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Slider from "react-slick";
 import "../styles/Review.css";
+import Slider from "react-slick";
 
 export const Review = ({ showContentOnly = false }) => {
   const [reviews, setReviews] = useState([]); // All reviews
@@ -74,10 +74,7 @@ export const Review = ({ showContentOnly = false }) => {
 
     try {
       form.email = localStorage.getItem("email");
-      const response = await axios.post(
-        "http://localhost:5001/reviews/add",
-        form
-      );
+      const response = await axios.post("http://localhost:5001/reviews/add", form);
       alert("Review submitted successfully!");
 
       const newReviews = [response.data, ...reviews];
@@ -173,7 +170,8 @@ export const Review = ({ showContentOnly = false }) => {
       ) : (
         <>
           <div className="review">
-            <div className="review-header"></div>
+            <div className="review-header">
+            </div>
             <div className="review-form">
               <h2>Write a Review</h2>
               <form onSubmit={handleSubmit}>
@@ -186,9 +184,7 @@ export const Review = ({ showContentOnly = false }) => {
                     onChange={handleInputChange}
                     placeholder="Write your review"
                   ></textarea>
-                  {errors.review && (
-                    <span className="error-text">{errors.review}</span>
-                  )}
+                  {errors.review && <span className="error-text">{errors.review}</span>}
                 </div>
                 <div className="review-form-group">
                   <label>Rating</label>
@@ -197,18 +193,14 @@ export const Review = ({ showContentOnly = false }) => {
                       <div
                         key={star}
                         className={`star ${
-                          hoverRating >= star || form.rating >= star
-                            ? "filled"
-                            : ""
+                          hoverRating >= star || form.rating >= star ? "filled" : ""
                         }`}
                         onMouseEnter={() => handleStarHover(star)}
                         onClick={() => handleStarClick(star)}
                       ></div>
                     ))}
                   </div>
-                  {errors.rating && (
-                    <span className="error-text">{errors.rating}</span>
-                  )}
+                  {errors.rating && <span className="error-text">{errors.rating}</span>}
                 </div>
                 <button type="submit">Submit Review</button>
               </form>
