@@ -1,28 +1,83 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
-import { AuthContext } from "../AuthContext";
 import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../AuthContext";
 
 export const Header = () => {
   const { isAuthenticated, logout, user, login } = useContext(AuthContext);
-  console.log(user);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for authToken in localStorage when component mounts
     const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      // Update AuthContext state if authToken is found
-      const user = jwtDecode(authToken);
-      login(authToken, user); // Pass the user object to the login function
+    if (authToken && !isAuthenticated) {
+      // Avoid repeated logins
+      try {
+        const decodedUser = jwtDecode(authToken);
+        login(authToken, decodedUser);
+        console.log("User logged in:", decodedUser);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        logout();
+        navigate("/login");
+      }
     }
-  }, [login]); // Include login in the dependency array to avoid linting warnings
+  }, [isAuthenticated, login, logout, navigate]);
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
+  };
+
+  const renderLinks = () => {
+    if (isAuthenticated) {
+      if (user.role === "customer") {
+        return (
+          <>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/schedule-my-cleaning">Schedule My Cleaning</Link>
+            </li>
+            <li>
+              <Link to="/review">Review</Link>
+            </li>
+          </>
+        );
+      } else if (user.role === "admin") {
+        return (
+          <>
+            <li>
+              <Link to="/admin-dashboard">Admin Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/allocate-slots">Allocate Slots</Link>
+            </li>
+            <li>
+              <Link to="/manage-packages">Manage Packages</Link>
+            </li>
+          </>
+        );
+      }
+    } else {
+      return (
+        <>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/services">Services</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
+          </li>
+        </>
+      );
+    }
   };
 
   return (
@@ -37,50 +92,7 @@ export const Header = () => {
       </div>
 
       <nav className="navbar">
-        <ul>
-          {isAuthenticated && user.role === "customer" ? (
-            <>
-              {/* Show Dashboard and Schedule My Cleaning if authenticated */}
-              <li>
-                <Link to="/dashboard">Dashboard</Link>
-              </li>
-              <li>
-                <Link to="/schedule-my-cleaning">Schedule My Cleaning</Link>{" "}
-                {/* Updated path */}
-              </li>
-              <li>
-                <Link to="/review">Review</Link>
-              </li>
-            </>
-          ) : isAuthenticated && user.role === "admin" ? (
-            <>
-              <li>
-                <Link to="/admin-dashboard">Admin Dashboard</Link>
-              </li>
-              <li>
-                <Link to="/allocate-slots">Allocate Slots</Link>
-              </li>
-              <li>
-                <Link to="/manage-packages">Manage Packages</Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/services">Services</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact Us</Link>
-              </li>
-            </>
-          )}
-        </ul>
+        <ul>{renderLinks()}</ul>
       </nav>
 
       <div className="auth-buttons">
