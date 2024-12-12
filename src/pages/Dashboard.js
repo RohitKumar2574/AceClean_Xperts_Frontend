@@ -66,15 +66,21 @@ export const Dashboard = () => {
     const fetchOrders = async () => {
       try {
         // Fetch upcoming orders (adjust URL to your API)
-        const upcomingResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/appointments`, {
-          params: { status: "upcoming", page: 1, limit: 10 },
-        });
+        const upcomingResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/appointments`,
+          {
+            params: { status: "upcoming", page: 1, limit: 10 },
+          }
+        );
         setUpcomingOrders(upcomingResponse.data.data);
 
         // Fetch order history (adjust URL to your API)
-        const historyResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/appointments`, {
-          params: { status: "completed", page: 1, limit: 10 },
-        });
+        const historyResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/appointments`,
+          {
+            params: { status: "completed", page: 1, limit: 10 },
+          }
+        );
         setOrderHistoryData(historyResponse.data.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -114,8 +120,10 @@ export const Dashboard = () => {
     <>
       <div className="banner text-center">
         <div className="banner-text text-center">
-          <h1 style={{ color: '#fff' }}>Dashboard</h1>
-          <p style={{ textAlign: 'center' }}>{activeTab.replace("-", " ").toUpperCase()}</p>
+          <h1 style={{ color: "#fff" }}>Dashboard</h1>
+          <p style={{ textAlign: "center" }}>
+            {activeTab.replace("-", " ").toUpperCase()}
+          </p>
         </div>
       </div>
       <div className="services-app">
@@ -157,7 +165,6 @@ export const Dashboard = () => {
         <div className="history-cards-container">
           {orderHistoryData.map((order) => (
             <div key={order.id} className="history-card">
-              
               <div className="history-details">
                 <h2 className="history-title">{order.packageName}</h2>
                 <p className="history-completed-date">

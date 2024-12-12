@@ -2,16 +2,38 @@ import React, { useState } from "react";
 import "../styles/Calculator.css";
 
 const Calculator = () => {
-  const [rooms, setRooms] = useState(0);
-  const [bathrooms, setBathrooms] = useState(0);
-  const [kitchen, setKitchen] = useState(0);
-  const [price, setPrice] = useState(5);
+  const [rooms, setRooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [kitchen, setKitchen] = useState("");
+  const [roomPrice, setRoomPrice] = useState(60);
+  const [bathPrice, setBathPrice] = useState(70);
+  const [kitchenPrice, setKitchenPrice] = useState(80);
   const [totalCost, setTotalCost] = useState(0);
 
   const handleCalculate = () => {
-    const totalArea = rooms + bathrooms + kitchen;
-    const cost = totalArea * price;
+    const cost =
+      Number(rooms) * roomPrice +
+      Number(bathrooms) * bathPrice +
+      Number(kitchen) * kitchenPrice;
     setTotalCost(cost);
+  };
+
+  const handleInputChange = (setter) => (e) => {
+    const value = e.target.value;
+
+    // Clear the input field if a non-numeric character is entered
+    if (!/^\d*$/.test(value)) {
+      setter("");
+      return;
+    }
+
+    // Prevent negative numbers
+    const numericValue = Number(value);
+    if (numericValue < 0) {
+      setter("");
+    } else {
+      setter(value); // Set the valid number
+    }
   };
 
   return (
@@ -22,7 +44,7 @@ const Calculator = () => {
         <input
           type="number"
           value={rooms}
-          onChange={(e) => setRooms(Number(e.target.value))}
+          onChange={handleInputChange(setRooms)}
         />
       </div>
       <div className="input-group">
@@ -30,7 +52,7 @@ const Calculator = () => {
         <input
           type="number"
           value={bathrooms}
-          onChange={(e) => setBathrooms(Number(e.target.value))}
+          onChange={handleInputChange(setBathrooms)}
         />
       </div>
       <div className="input-group">
@@ -38,7 +60,7 @@ const Calculator = () => {
         <input
           type="number"
           value={kitchen}
-          onChange={(e) => setKitchen(Number(e.target.value))}
+          onChange={handleInputChange(setKitchen)}
         />
       </div>
       <button onClick={handleCalculate}>Calculate Cost</button>

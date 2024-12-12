@@ -49,13 +49,10 @@ export const Register = () => {
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         <Form onSubmit={handleSubmit} className={styles.form}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label className={styles.label}>
-              Please Enter Email address
-            </Form.Label>
             <Form.Control
               type="email"
               name="email"
-              placeholder="Enter email"
+              placeholder="Please enter your email"
               value={formData.email}
               onChange={handleInputChange}
               className={styles.input}
@@ -64,11 +61,10 @@ export const Register = () => {
           </Form.Group>
 
           <Form.Group controlId="formBasicName">
-            <Form.Label className={styles.label}>Please Enter Name</Form.Label>
             <Form.Control
               type="text"
               name="name"
-              placeholder="Enter name"
+              placeholder="Please enter your name"
               value={formData.name}
               onChange={handleInputChange}
               className={styles.input}
@@ -77,13 +73,10 @@ export const Register = () => {
           </Form.Group>
 
           <Form.Group controlId="formBasicUsername">
-            <Form.Label className={styles.label}>
-              Please Enter Username
-            </Form.Label>
             <Form.Control
               type="text"
               name="username"
-              placeholder="Enter username"
+              placeholder="Please enter your username"
               value={formData.username}
               onChange={handleInputChange}
               className={styles.input}
@@ -92,13 +85,10 @@ export const Register = () => {
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label className={styles.label}>
-              Please Enter Password
-            </Form.Label>
             <Form.Control
               type="password"
               name="password"
-              placeholder="Enter password"
+              placeholder="Please create new password"
               value={formData.password}
               onChange={handleInputChange}
               className={styles.input}

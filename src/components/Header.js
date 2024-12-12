@@ -1,14 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import { AuthContext } from "../AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 export const Header = () => {
-  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  const { isAuthenticated, logout, user, login } = useContext(AuthContext);
   console.log(user);
-  
+
   const navigate = useNavigate();
-  const { role } = user;
+
+  useEffect(() => {
+    // Check for authToken in localStorage when component mounts
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      // Update AuthContext state if authToken is found
+      const user = jwtDecode(authToken);
+      login(authToken, user); // Pass the user object to the login function
+    }
+  }, [login]); // Include login in the dependency array to avoid linting warnings
 
   const handleLogout = () => {
     logout();
@@ -28,7 +38,7 @@ export const Header = () => {
 
       <nav className="navbar">
         <ul>
-          {isAuthenticated && role === "customer" ? (
+          {isAuthenticated && user.role === "customer" ? (
             <>
               {/* Show Dashboard and Schedule My Cleaning if authenticated */}
               <li>
@@ -42,7 +52,7 @@ export const Header = () => {
                 <Link to="/review">Review</Link>
               </li>
             </>
-          ) : isAuthenticated && role === "admin" ? (
+          ) : isAuthenticated && user.role === "admin" ? (
             <>
               <li>
                 <Link to="/admin-dashboard">Admin Dashboard</Link>
