@@ -1,0 +1,227 @@
+/* Bookings.module.css */
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .navTabs {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 40%;
+    margin: 0 auto;
+    border-bottom: 2px solid transparent;
+  }
+  
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 15px;
+    border: none;
+    background: transparent;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+    border-bottom: 2px solid transparent;
+  }
+  
+  .tab:hover {
+    color: #0a4c75;
+    border-bottom: 2px solid #0a4c75;
+    background: none !important;
+    border-radius: 0;
+  }
+  
+  .activeTab {
+    color: #0a4c75;
+    font-weight: bold;
+    border-bottom: 2px solid #0a4c75;
+    border-radius: 0;
+  }
+  
+  .bookingsList {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    margin: 20px 0px;
+  }
+  
+  .bookingCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .bookingDetails {
+    text-align: left;
+    flex: 1;
+  }
+  
+  .bookingDetails h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: black;
+  }
+  
+  .bookingDetails p {
+    font-size: 14px;
+    color: #666;
+    margin: 3px 0;
+  }
+  
+  .bookingImage {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    margin-left: 10px;
+  }
+
+
+
+  .metricsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .label {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  
+  .value {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  .percentage {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .positive {
+    color: green;
+  }
+  
+  .negative {
+    color: red;
+  }
+
+  .container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+  text-align: left;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.customerPhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+
+.transaction-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.transaction-title {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+  text-align: left;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.transaction-th,
+.transaction-td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.transaction-th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.transaction-customerPhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.transaction-tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.transaction-tr:hover {
+  background-color: #f1f1f1;
+}
+
+  
+  

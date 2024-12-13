@@ -17,6 +17,8 @@ export const ScheduleMyCleaning = () => {
     totalPrice: 0,
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [unavailableTimeRanges, setUnavailableTimeRanges] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const timeRanges = [
@@ -46,7 +48,6 @@ export const ScheduleMyCleaning = () => {
     "12:00 AM - 01:00 AM",
   ];
 
-  // Fetch packages on component mount
   useEffect(() => {
     fetchPackages();
   }, []);
@@ -54,11 +55,32 @@ export const ScheduleMyCleaning = () => {
   const fetchPackages = async () => {
     try {
       const response = await axios.get("http://localhost:5001/api/packages");
-      setPackages(response.data); // Set the fetched packages
+      setPackages(response.data);
     } catch (error) {
-      setErrorMessage(
-        "Failed to fetch cleaning packages. Please try again later."
-      );
+      setErrorMessage("Failed to fetch cleaning packages. Please try again later.");
+    }
+  };
+
+  const fetchSlotsByDate = async (date) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:5001/api/slots/date?date=${date}`);
+      const slotData = response.data[0];
+
+      if (slotData) {
+        const availableSlots = slotData.slots.map(
+          (slot) => `${slot.startTime} - ${slot.endTime}`
+        );
+        console.log({availableSlots})
+        setUnavailableTimeRanges(availableSlots);
+        setErrorMessage("");
+      } else {
+        setUnavailableTimeRanges([]);
+      }
+      setLoading(false);
+    } catch (error) {
+      setErrorMessage("Failed to fetch slots for the selected date.");
+      setLoading(false);
     }
   };
 
@@ -70,71 +92,30 @@ export const ScheduleMyCleaning = () => {
     }));
   };
 
-  const handleCleaningTypeChange = (e) => {
-    const type = e.target.value;
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
     setAppointmentData((prevState) => ({
       ...prevState,
-      cleaningType: type,
-      packageName: "",
-      packageDetails: "",
-      packagePrice: 0,
-      hst: 0,
-      totalPrice: 0,
+      preferredDate: selectedDate,
     }));
-  };
-
-  const handlePackageChange = (e) => {
-    const selectedPackageName = e.target.value;
-    const selectedPackage = packages.find(
-      (pkg) =>
-        pkg.name === selectedPackageName &&
-        pkg.type === appointmentData.cleaningType
-    );
-
-    if (selectedPackage) {
-      const hst = parseFloat((0.13 * selectedPackage.price).toFixed(2));
-      const totalPrice = parseFloat((selectedPackage.price + hst).toFixed(2));
-
-      setAppointmentData((prevState) => ({
-        ...prevState,
-        packageName: selectedPackage.name,
-        packageDetails: selectedPackage.description,
-        packagePrice: selectedPackage.price,
-        hst,
-        totalPrice,
-      }));
-    }
+    fetchSlotsByDate(selectedDate);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    const {
-      customerNameForCleaning,
-      preferredDate,
-      preferredTimeRange,
-      packageName,
-    } = appointmentData;
-  
-    if (
-      !customerNameForCleaning ||
-      !preferredDate ||
-      !preferredTimeRange ||
-      !packageName
-    ) {
+    const { customerNameForCleaning, preferredDate, preferredTimeRange, packageName } = appointmentData;
+
+    if (!customerNameForCleaning || !preferredDate || !preferredTimeRange || !packageName) {
       setErrorMessage("All fields are required.");
       return;
     }
-  
-    setErrorMessage(""); // Clear previous errors
-  
-    // Redirect to the payment page with appointmentData as state
-    navigate("/payment", { state: { appointmentData } });
+
+    setErrorMessage("");
+    localStorage.setItem("appointmentData", JSON.stringify(appointmentData));
+    navigate("/payment");
   };
-  
 
   const getPackageOptions = () => {
-    // Filter packages based on the selected cleaning type
     return packages
       .filter((pkg) => pkg.type === appointmentData.cleaningType)
       .map((pkg) => (
@@ -163,7 +144,7 @@ export const ScheduleMyCleaning = () => {
           type="date"
           name="preferredDate"
           value={appointmentData.preferredDate}
-          onChange={handleInputChange}
+          onChange={handleDateChange}
           required
         />
         <div className={styles.radioButtons}>
@@ -173,9 +154,8 @@ export const ScheduleMyCleaning = () => {
               name="cleaningType"
               value="residential"
               checked={appointmentData.cleaningType === "residential"}
-              onChange={handleCleaningTypeChange}
-            />{" "}
-            Residential
+              onChange={handleInputChange}
+            /> Residential
           </label>
           <label>
             <input
@@ -183,9 +163,8 @@ export const ScheduleMyCleaning = () => {
               name="cleaningType"
               value="commercial"
               checked={appointmentData.cleaningType === "commercial"}
-              onChange={handleCleaningTypeChange}
-            />{" "}
-            Commercial
+              onChange={handleInputChange}
+            /> Commercial
           </label>
         </div>
         <select
@@ -196,17 +175,23 @@ export const ScheduleMyCleaning = () => {
           required
         >
           <option value="">Select Time Range</option>
-          {timeRanges.map((range, index) => (
-            <option key={index} value={range}>
-              {range}
-            </option>
-          ))}
+          {loading ? (
+            <option>Loading...</option>
+          ) : (
+            timeRanges
+              .filter((range) => !unavailableTimeRanges.includes(range)) 
+              .map((range, index) => (
+                <option key={index} value={range}>
+                  {range}
+                </option>
+              ))
+          )}
         </select>
         <select
           className={styles.inputField}
           name="packageName"
           value={appointmentData.packageName}
-          onChange={handlePackageChange}
+          onChange={handleInputChange}
           required
         >
           <option value="">Select Package</option>
