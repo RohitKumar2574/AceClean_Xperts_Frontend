@@ -19,8 +19,6 @@ export const AuthProvider = ({ children }) => {
     // Check if the token is in localStorage on component mount
     const storedToken = localStorage.getItem("authToken");
     if (storedToken) {
-      console.log(storedToken);
-
       setToken(storedToken);
       setIsAuthenticated(true);
     }

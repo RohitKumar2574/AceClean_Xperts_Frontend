@@ -1,14 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../AuthContext";
 
 export const Dashboard = () => {
-  console.log(process.env.REACT_APP_API_URL);
   const [activeTab, setActiveTab] = useState("basic-clean");
   const [upcomingOrders, setUpcomingOrders] = useState([]);
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const navigate = useNavigate();
+  const { isAuthenticated, user, login, logout } = useContext(AuthContext);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, login, logout, navigate]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          return;
+        }
+
+        const headers = { Authorization: `Bearer ${authToken}` };
+
+        // Fetch upcoming orders
+        const upcomingResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/appointments`,
+          {
+            headers,
+            params: { status: "upcoming", page: 1, limit: 10 },
+          }
+        );
+        setUpcomingOrders(upcomingResponse.data.data);
+
+        // Fetch order history
+        const historyResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/appointments`,
+          {
+            headers,
+            params: { status: "completed", page: 1, limit: 10 },
+          }
+        );
+        setOrderHistoryData(historyResponse.data.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, [navigate]);
 
   const handleContactSupport = () => {
     navigate("/contact");
@@ -60,35 +107,6 @@ export const Dashboard = () => {
       ],
     },
   };
-
-  // Fetch orders dynamically
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        // Fetch upcoming orders (adjust URL to your API)
-        const upcomingResponse = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/appointments`,
-          {
-            params: { status: "upcoming", page: 1, limit: 10 },
-          }
-        );
-        setUpcomingOrders(upcomingResponse.data.data);
-
-        // Fetch order history (adjust URL to your API)
-        const historyResponse = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/appointments`,
-          {
-            params: { status: "completed", page: 1, limit: 10 },
-          }
-        );
-        setOrderHistoryData(historyResponse.data.data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
 
   const renderContent = () => {
     const content = serviceData[activeTab];

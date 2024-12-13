@@ -108,14 +108,14 @@ export const ScheduleMyCleaning = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const {
       customerNameForCleaning,
       preferredDate,
       preferredTimeRange,
       packageName,
     } = appointmentData;
-
+  
     if (
       !customerNameForCleaning ||
       !preferredDate ||
@@ -125,13 +125,13 @@ export const ScheduleMyCleaning = () => {
       setErrorMessage("All fields are required.");
       return;
     }
-
+  
     setErrorMessage(""); // Clear previous errors
-
-    // Save appointment data to localStorage and redirect to payment
-    localStorage.setItem("appointmentData", JSON.stringify(appointmentData));
-    navigate("/payment");
+  
+    // Redirect to the payment page with appointmentData as state
+    navigate("/payment", { state: { appointmentData } });
   };
+  
 
   const getPackageOptions = () => {
     // Filter packages based on the selected cleaning type

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import styles from "../styles/Payment.module.css";
+import { AuthContext } from "../AuthContext";
 
 export const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -14,9 +15,26 @@ export const Payment = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext)
 
-  const appointmentData = JSON.parse(localStorage.getItem("appointmentData"));
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { appointmentData } = location.state || {};
+  console.log(appointmentData);
+  
+
+  // Redirect if appointmentData is missing
+  if (!appointmentData) {
+    return (
+      <div className={styles.container}>
+        <h2>Error</h2>
+        <p>No appointment data found. Please schedule your cleaning first.</p>
+        <button onClick={() => navigate("/schedule-my-cleaning")}>
+          Schedule Cleaning
+        </button>
+      </div>
+    );
+  }
 
   const validateCardNumber = (number) => /^[0-9\s]{19}$/.test(number);
   const validateExpiryDate = (expiry) =>
@@ -60,9 +78,7 @@ export const Payment = () => {
     const { cardNumber, expiryDate, cvv, cardHolderName } = cardDetails;
 
     if (!validateCardNumber(cardNumber)) {
-      setErrorMessage(
-        "Invalid card number. Please enter a valid 16-digit card number."
-      );
+      setErrorMessage("Invalid card number. Please enter a valid 16-digit card number.");
       setIsProcessing(false);
       return;
     }
@@ -85,30 +101,27 @@ export const Payment = () => {
       return;
     }
 
-    setTimeout(async () => {
-      try {
-        const response = await fetch("http://localhost:5001/api/appointments", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(appointmentData),
-        });
+    try {
+      const response = await fetch("http://localhost:5001/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...appointmentData, userId: user?.id }),
+      });
 
-        const result = await response.json();
+      const result = await response.json();
 
-        if (response.ok) {
-          setPaymentSuccess(true);
-          localStorage.removeItem("appointmentData");
-          navigate("/dashboard");
-        } else {
-          setErrorMessage(result.message || "Failed to book appointment.");
-        }
-      } catch (error) {
-        console.error("Error saving appointment:", error);
-        setErrorMessage("There was an error processing your appointment.");
+      if (response.ok) {
+        setPaymentSuccess(true);
+        navigate("/dashboard");
+      } else {
+        setErrorMessage(result.message || "Failed to book appointment.");
       }
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+      setErrorMessage("There was an error processing your appointment.");
+    }
 
-      setIsProcessing(false);
-    }, 2000);
+    setIsProcessing(false);
   };
 
   const handlePayPalSuccess = async (details) => {
@@ -125,7 +138,6 @@ export const Payment = () => {
 
       if (response.ok) {
         setPaymentSuccess(true);
-        localStorage.removeItem("appointmentData");
         navigate("/dashboard");
       } else {
         setErrorMessage(result.message || "Failed to book appointment.");

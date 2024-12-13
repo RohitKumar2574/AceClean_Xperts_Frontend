@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Login.module.css"; // Use the styles from the first component
 import { Form, Button } from "react-bootstrap";
@@ -9,6 +9,14 @@ export const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const { isAuthenticated } = useContext(AuthContext);
+  
+    useEffect(() => {
+      
+      if (isAuthenticated) {
+        navigate("/dashboard");
+      }
+    }, [isAuthenticated]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
