@@ -52,15 +52,6 @@ export const ScheduleMyCleaning = () => {
     fetchPackages();
   }, []);
 
-  const fetchPackages = async () => {
-    try {
-      const response = await axios.get("http://localhost:5001/api/packages");
-      setPackages(response.data);
-    } catch (error) {
-      setErrorMessage("Failed to fetch cleaning packages. Please try again later.");
-    }
-  };
-
   const fetchSlotsByDate = async (date) => {
     try {
       setLoading(true);
@@ -71,7 +62,7 @@ export const ScheduleMyCleaning = () => {
         const availableSlots = slotData.slots.map(
           (slot) => `${slot.startTime} - ${slot.endTime}`
         );
-        console.log({availableSlots})
+        console.log({ availableSlots })
         setUnavailableTimeRanges(availableSlots);
         setErrorMessage("");
       } else {
@@ -79,8 +70,51 @@ export const ScheduleMyCleaning = () => {
       }
       setLoading(false);
     } catch (error) {
-      setErrorMessage("Failed to fetch slots for the selected date.");
+      // setErrorMessage("Failed to fetch slots for the selected date.");
       setLoading(false);
+    }
+  };
+
+  const fetchPackages = async () => {
+    try {
+      const response = await axios.get("http://localhost:5001/api/packages");
+      setPackages(response.data);
+    } catch (error) {
+      setErrorMessage("Failed to fetch cleaning packages. Please try again later.");
+    }
+  };
+
+  const handleCleaningTypeChange = (e) => {
+    const type = e.target.value;
+    setAppointmentData((prevState) => ({
+      ...prevState,
+      cleaningType: type,
+      packageName: "",
+      packageDetails: "",
+      packagePrice: 0,
+      hst: 0,
+      totalPrice: 0,
+    }));
+  };
+
+  const handlePackageChange = (e) => {
+    const selectedPackageName = e.target.value;
+    const selectedPackage = packages.find(
+      (pkg) =>
+        pkg.name === selectedPackageName &&
+        pkg.type === appointmentData.cleaningType
+    );
+    if (selectedPackage) {
+      const hst = parseFloat((0.13 * selectedPackage.price).toFixed(2));
+      const totalPrice = parseFloat((selectedPackage.price + hst).toFixed(2));
+      setAppointmentData((prevState) => ({
+        ...prevState,
+        packageName: selectedPackage.name,
+        packageDetails: selectedPackage.description,
+        packagePrice: selectedPackage.price,
+        hst,
+        totalPrice,
+      }));
     }
   };
 
@@ -109,10 +143,10 @@ export const ScheduleMyCleaning = () => {
       setErrorMessage("All fields are required.");
       return;
     }
-
+    console.log({ appointmentData });
     setErrorMessage("");
     localStorage.setItem("appointmentData", JSON.stringify(appointmentData));
-    navigate("/payment");
+    navigate("/payment", { state: { appointmentData } });
   };
 
   const getPackageOptions = () => {
@@ -154,7 +188,7 @@ export const ScheduleMyCleaning = () => {
               name="cleaningType"
               value="residential"
               checked={appointmentData.cleaningType === "residential"}
-              onChange={handleInputChange}
+              onChange={handleCleaningTypeChange}
             /> Residential
           </label>
           <label>
@@ -163,7 +197,7 @@ export const ScheduleMyCleaning = () => {
               name="cleaningType"
               value="commercial"
               checked={appointmentData.cleaningType === "commercial"}
-              onChange={handleInputChange}
+              onChange={handleCleaningTypeChange}
             /> Commercial
           </label>
         </div>
@@ -179,7 +213,7 @@ export const ScheduleMyCleaning = () => {
             <option>Loading...</option>
           ) : (
             timeRanges
-              .filter((range) => !unavailableTimeRanges.includes(range)) 
+              .filter((range) => !unavailableTimeRanges.includes(range))
               .map((range, index) => (
                 <option key={index} value={range}>
                   {range}
@@ -191,12 +225,13 @@ export const ScheduleMyCleaning = () => {
           className={styles.inputField}
           name="packageName"
           value={appointmentData.packageName}
-          onChange={handleInputChange}
+          onChange={handlePackageChange}
           required
         >
           <option value="">Select Package</option>
           {getPackageOptions()}
         </select>
+        {console.log({ textArea: appointmentData.textArea })};
         <textarea
           className={styles.textArea}
           name="packageDetails"
